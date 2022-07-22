@@ -30,8 +30,8 @@ public class Simplex2D extends Number {
         return multiply(new Simplex2D(x, y, z));
     }
 
-    public static Simplex2D simplexp(double radians) {
-        return new Simplex2D(2*cos(radians)/3.0, 2*cos(radians - 2*PI/3)/3.0, 2*cos(radians + 2*PI/3)/3.0);
+    public Simplex2D multiply(double scalar) {
+        return multiply(scalar, 0, 0);
     }
 
     public Simplex2D multiply(Simplex2D other) {
@@ -42,6 +42,10 @@ public class Simplex2D extends Number {
         return new Simplex2D(r * other.r + q * other.d + d * other.q,
                 r * other.q + q * other.r + d * other.d,
                 r * other.d + d * other.r + q * other.q).normalize();
+    }
+
+    public static Simplex2D generateUnit(double radians) {
+        return new Simplex2D(2*cos(radians)/3.0, 2*cos(radians - 2*PI/3)/3.0, 2*cos(radians + 2*PI/3)/3.0);
     }
 
     public Quaternion complexValue() {

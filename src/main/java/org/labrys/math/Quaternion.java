@@ -30,6 +30,10 @@ public class Quaternion extends Number {
         return multiply(new Quaternion(w, x, y, z));
     }
 
+    public Quaternion multiply(double scalar) {
+        return multiply(scalar, 0, 0, 0);
+    }
+
     public Quaternion multiply(Quaternion other) {
         /**
          * (w + xi + yj + zk)(s + ci + qj + hk)

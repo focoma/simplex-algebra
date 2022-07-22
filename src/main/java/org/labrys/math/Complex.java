@@ -15,4 +15,8 @@ public class Complex extends Quaternion {
             throw new IllegalArgumentException("The imaginary quaternion should not have a real part.");
         }
     }
+
+    public static Complex generateUnit(double radians) {
+        return new Complex(Math.cos(radians), Math.sin(radians));
+    }
 }
