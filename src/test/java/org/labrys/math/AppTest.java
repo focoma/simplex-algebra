@@ -18,10 +18,11 @@ public class AppTest
     @Test
     public void testEqualityWithComplexUnits()
     {
-        double radians = 4*PI/3;
+        double radians = 1;
 
         Simplex2D unitVector = Simplex2D.generateUnit(radians);
         System.out.println(unitVector);
+        System.out.println(unitVector.multiply(3));
         System.out.println(unitVector.normalize());
 
         Complex complexUnitVector = Complex.generateUnit(radians);
@@ -34,13 +35,13 @@ public class AppTest
                 0.000000000000001);
 
         double scalar = 3.0;
-        Quaternion scaledUnit = complexUnitVector.multiply(scalar);
-        assertEquals(scaledUnit.r,
+        Quaternion scaledComplexUnit = complexUnitVector.multiply(scalar);
+        assertEquals(scaledComplexUnit.r,
                 unitVector.multiply(scalar).complexValue().r,
-                0.000000000000001);
+                0.00000000000001);
 
-        assertEquals(scaledUnit.i,
+        assertEquals(scaledComplexUnit.i,
                 unitVector.multiply(scalar).complexValue().i,
-                0.000000000000001);
+                0.00000000000001);
     }
 }

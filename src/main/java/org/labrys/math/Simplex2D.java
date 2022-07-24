@@ -3,6 +3,7 @@ package org.labrys.math;
 import static java.lang.Math.*;
 
 public class Simplex2D extends Number {
+    public static final double TAU = 2 * PI;
     public final double r;
     public final double q;
     public final double d;
@@ -41,11 +42,11 @@ public class Simplex2D extends Number {
          */
         return new Simplex2D(r * other.r + q * other.d + d * other.q,
                 r * other.q + q * other.r + d * other.d,
-                r * other.d + d * other.r + q * other.q).normalize();
+                r * other.d + d * other.r + q * other.q);
     }
 
     public static Simplex2D generateUnit(double radians) {
-        return new Simplex2D(2*cos(radians)/3.0, 2*cos(radians - 2*PI/3)/3.0, 2*cos(radians + 2*PI/3)/3.0);
+        return new Simplex2D(2*cos(radians)/3.0, 2*cos(radians + 2*TAU/3)/3.0, 2*cos(radians + TAU/3)/3.0);
     }
 
     public Quaternion complexValue() {
