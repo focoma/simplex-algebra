@@ -39,18 +39,13 @@ public class Simplex3D extends Number {
          * Commutative:
          * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + (xq + yc)bp + (xh + zc)bg + yqpp + (yh + zq)pg + zhgg
          *
-         * Non-Commutative:
-         * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + (xq - yc)bp + (-xh + zc)bg + yqpp + (yh - zq)pg + zhgg
-         *
          * Simplectic:
-         * = ws + (wc + xs + yq + yh + zq)b + (wq + ys + xq + yc + zh)p + (wh + zs + xh + zc)g + xcbb
+         * = ws + xh + zc + yq + (wc + xs + yh + zq)b + (wq + ys + xc + zh)p + (wh + zs + xq + yc)g
          */
-        Simplex3D product = new Simplex3D(r * other.r,
-                r * other.b + b * other.r + p * other.p + p * other.g + g * other.p,
-                r * other.p + p * other.r + b * other.p + p * other.b + g * other.g,
-                r * other.g + g * other.r + b * other.g + g * other.b);
-
-        product = product.add(new Simplex3D(0, b*other.b/3, b*other.b, b*other.b));
+        Simplex3D product = new Simplex3D(r * other.r + b * other.g + g * other.b + p * other.p,
+                r * other.b + b * other.r + p * other.g + g * other.p,
+                r * other.p + p * other.r + b * other.b + g * other.g,
+                r * other.g + g * other.r + b * other.p + p * other.b);
 
         return product;
     }

@@ -12,9 +12,11 @@ import static java.lang.Math.*;
  */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+    @Test
+    public void test3D() {
+        System.out.println(new Simplex3D(1, 0, 0, 0));
+    }
+
     @Test
     public void testEqualityWithComplexUnits()
     {
