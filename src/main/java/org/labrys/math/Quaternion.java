@@ -57,10 +57,6 @@ public class Quaternion extends Number {
         return product;
     }
 
-    private Quaternion raise(double power) {
-        return new Quaternion();
-    }
-
     @Override
     public int intValue() {
         return (int)r;

@@ -2,6 +2,9 @@ package org.labrys.math;
 
 import java.text.MessageFormat;
 
+import static java.lang.Math.min;
+import static java.lang.Math.sqrt;
+
 public class Simplex3D extends Number {
     private double r;
     private double b;
@@ -18,6 +21,12 @@ public class Simplex3D extends Number {
         this.g = g;
     }
 
+    public Simplex3D normalize() {
+        double min1 = min(b, g);
+        double min2 = min(p, min1);
+        return new Simplex3D(r-min2, b-min2, p-min2, g-min2);
+    }
+
     public Simplex3D add(double w, double x, double y, double z) {
         return add(new Simplex3D(w, x, y, z));
     }
@@ -28,6 +37,10 @@ public class Simplex3D extends Number {
 
     public Simplex3D multiply(double w, double x, double y, double z) {
         return multiply(new Simplex3D(w, x, y, z));
+    }
+
+    public Simplex3D multiply(double scalar) {
+        return multiply(scalar, 0, 0, 0);
     }
 
     public Simplex3D multiply(Simplex3D other) {
@@ -50,10 +63,6 @@ public class Simplex3D extends Number {
         return product;
     }
 
-    private Simplex3D raise(double power) {
-        return new Simplex3D();
-    }
-
     @Override
     public int intValue() {
         return (int)r;
@@ -72,6 +81,22 @@ public class Simplex3D extends Number {
     @Override
     public double doubleValue() {
         return r;
+    }
+
+    public Quaternion quaternionValue() {
+        return triplexValue().quaternionValue();
+    }
+
+    public Triplex triplexValue() {
+        Simplex3D normalized = normalize();
+        Triplex c = new Triplex(1, 1, 1)
+                .multiply(-1.0 / 3.0)
+                .add(0, 1.0 / sqrt(3.0), -1.0 / sqrt(3.0));
+
+        return new Triplex(normalized.r, 0, 0)
+                .add(c.multiply(normalized.b))
+                .add(c.multiply(c).multiply(normalized.p))
+                .add(c.multiply(c).multiply(c).multiply(normalized.g));
     }
 
     @Override
