@@ -5,13 +5,13 @@ import static java.lang.Math.*;
 public class Triplex extends Number {
     public static final double TAU = 2 * PI;
     public final double r;
-    public final double y;
-    public final double z;
+    public final double j;
+    public final double k;
 
     public Triplex(double r, double y, double z) {
         this.r = r;
-        this.y = y;
-        this.z = z;
+        this.j = y;
+        this.k = z;
     }
 
     public Triplex add(double x, double y, double z) {
@@ -19,7 +19,7 @@ public class Triplex extends Number {
     }
 
     public Triplex add(Triplex other) {
-        return new Triplex(r + other.r, y + other.y, z + other.z);
+        return new Triplex(r + other.r, j + other.j, k + other.k);
     }
 
     public Triplex multiply(double x, double y, double z) {
@@ -32,16 +32,24 @@ public class Triplex extends Number {
 
     public Triplex multiply(Triplex other) {
         /*
-         * (a + by + cz)(d + ey + fz)
-         * = ad + bf + ce + aey + bdy + cfy + afz + bez + cdz
+         * (a + bj + ck)(d + ej + fk)
+         * = ad + bf + ce + aej + bdj + cfj + afk + bek + cdk
          */
-        return new Triplex(r * other.r + y * other.z + z * other.y,
-                r * other.y + y * other.r + z * other.z,
-                r * other.z + z * other.r + y * other.y);
+        return new Triplex(r * other.r + j * other.k + k * other.j,
+                r * other.j + j * other.r + k * other.k,
+                r * other.k + k * other.r + j * other.j);
+    }
+
+    public Triplex divide(Triplex t) {
+        return divide(t.r, t.j, t.k);
+    }
+
+    public Triplex divide(double a, double b, double c) {
+        return multiply(a*a - b*c, c*c - a*b, b*b - a*c).multiply(1.0/(a*a*a + b*b*b + c*c*c - 3*a*b*c));
     }
 
     public Triplex conjugate() {
-        return new Triplex(r*r - y*z, z*z - r*y, y*y - r*z);
+        return new Triplex(r*r - j * k, k * k - r* j, j * j - r* k);
     }
 
     public double norm() {
@@ -49,7 +57,11 @@ public class Triplex extends Number {
     }
 
     public Quaternion quaternionValue() {
-        return new Quaternion(0, r, y, z);
+        return new Quaternion(0, r, j, k);
+    }
+    
+    public Quadruplex quadruplexValue() {
+        return new Quadruplex(r, j, k,0);
     }
 
     @Override
@@ -75,32 +87,32 @@ public class Triplex extends Number {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        if (r != 0 || (y == 0 && z == 0)) {
+        if (r != 0 || (j == 0 && k == 0)) {
             builder.append(r);
         }
-        if (y != 0) {
+        if (j != 0) {
             if (r != 0) {
-                if (y > 0) {
-                    builder.append(" + ").append(y);
+                if (j > 0) {
+                    builder.append(" + ").append(j);
                 } else {
-                    builder.append(" - ").append(-y);
+                    builder.append(" - ").append(-j);
                 }
             } else {
-                builder.append(y);
+                builder.append(j);
             }
-            builder.append("x");
+            builder.append("j");
         }
-        if (z != 0) {
-            if (r != 0 || y != 0) {
-                if (z > 0) {
-                    builder.append(" + ").append(z);
+        if (k != 0) {
+            if (r != 0 || j != 0) {
+                if (k > 0) {
+                    builder.append(" + ").append(k);
                 } else {
-                    builder.append(" - ").append(-z);
+                    builder.append(" - ").append(-k);
                 }
             } else {
-                builder.append(z);
+                builder.append(k);
             }
-            builder.append("y");
+            builder.append("k");
         }
 
         return builder.toString();

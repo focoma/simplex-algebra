@@ -2,7 +2,9 @@ package org.labrys.math;
 
 import org.junit.Test;
 
-import static java.lang.Math.sqrt;
+import java.text.MessageFormat;
+
+import static java.lang.Math.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -10,18 +12,18 @@ import static org.junit.Assert.assertEquals;
  */
 public class AppTest 
 {
+    private static final double PHI = (1.0 + sqrt(5))/2.0;
     @Test
     public void testTriplex() {
 
-        Triplex e1 = new Triplex(1,1,1).multiply(1.0/3.0);
-        System.out.println(e1);
-        System.out.println(e1.multiply(e1));
-        Triplex e2 = new Triplex(2, -1, -1).multiply(1.0/3.0);
-        Triplex e3 = new Triplex(0, 1, -1).multiply(1.0 / sqrt(3));
-        System.out.println(e2);
-        System.out.println(e3);
-        System.out.println(e2.multiply(e3));
-        System.out.println(e3.multiply(e3));
+        System.out.println(new Triplex(2,2,0).multiply(new Simplex3D(0,0,0,-1).triplexValue()));
+    }
+
+    @Test
+    public void testTriplexDivision() {
+        Triplex t = new Triplex(-sqrt(2), 1.0 + sqrt(2), sqrt(2) - 1.0);
+        System.out.println(t);
+        System.out.println(t.divide(new Triplex(2,2,0)));
     }
 
     @Test
@@ -34,35 +36,23 @@ public class AppTest
     }
 
     @Test
-    public void testTriplexWithDodecahedron() {
-        Triplex s = new Triplex(0.206011329583297, -0.263647691154906, -0.942363638428394);
-        Triplex s2 = new Simplex3D(0,0,0,-1).triplexValue();
-        Triplex s3 = new Triplex(-0.804737854124384, 0.3106172175, -0.5058793634);
-        Triplex s4 = new Simplex3D(0,0,1,0).triplexValue();
-        Triplex s5 = new Triplex(-0.804737854124384, 0.3106172175, -0.5058793634);
-        Triplex s6 = new Simplex3D(0,-1,0,0).triplexValue();
-        Triplex s7 = new Triplex(-0.804737854124384, 0.3106172175, -0.5058793634);
+    public void testTriplexWithTetragonalAntiprism() {
+        Triplex s = new Triplex(-(sqrt(2) + 1.0) / 3.0, (-2.0 + sqrt(2) + sqrt(6)) / 6.0, -(2.0 - sqrt(2) + sqrt(6)) / 6.0);
+//        Triplex s = new Triplex(1.0/3.0,1.0/3.0,1.0/3.0);
 
-        System.out.println(s);
-        System.out.println(s.multiply(s));
-        System.out.println(s.multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
-        System.out.println(s.multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s).multiply(s));
+        Triplex t = s;
+        for (int i = 0; i < 8; i++) {
+            System.out.println(t);
+            t = t.multiply(s);
+        }
+        System.out.println();
+
+        Triplex c = new Simplex3D(0,-1,0,0).triplexValue();
+        t = c;
+        for (int i = 0; i < 4; i++) {
+            System.out.println(t);
+            t = t.multiply(c);
+        }
     }
 
     @Test
@@ -127,5 +117,65 @@ public class AppTest
         assertEquals(scaledComplexUnit.i,
                 unitVector.multiply(scalar).complexValue().i,
                 0.00000000000001);
+    }
+
+    @Test
+    public void findQuadruplex() {
+        caseloop: for (int x = 0; x < 1000000000; x++) {
+            double r = -0.25;
+            double h = -0.939 - 0.001*random();
+            double h2 = 2.0*sqrt(PI)/3.0-1.0;
+            double h3 = -sqrt(1-r*r-h*h-h2*h2);
+            Quadruplex b = new Quadruplex(r, h, h2, h3);
+
+            Quadruplex q = b;
+            boolean e = false;
+            Quadruplex s = new Quadruplex(0,0,0,0);
+            for (int i = 0; i < 12; i++) {
+                if (q.r > 1.5 || q.j > 1.5 || q.k > 1.5 || q.l > 1.5 || q.r < -1.5 || q.j < -1.5 || q.k < -1.5 || q.l < -1.5) {
+                    continue caseloop;
+                }
+                s = s.add(q);
+                if (i==4 && q.r > 0.99 && q.r < 1.01 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
+                    e = true;
+                }
+                if (e && i==9 && q.r > 0.999 && q.r < 1.001 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
+                    if (MessageFormat.format("{0,number,0.0000000}",abs(s.r)).contains("0.00000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.j)).contains("0.00000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.k)).contains("0.00000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.l)).contains("0.00000")) {
+                        System.out.println((i + 1) + " x " + b + " = " + q);
+                    }
+                }
+                q = q.multiply(b);
+            }
+//            System.out.println(b);
+        }
+    }
+
+    @Test
+    public void testQuadruplexTetrahedron() {
+        Quadruplex q = new Quadruplex(0.5, 0, 0.5, -sqrt(2)/2.0);
+
+        System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
+
+        Quadruplex x = q;
+        for (int i = 0; i < 20; i++) {
+            System.out.println(x);
+            x = x.multiply(q);
+        }
+    }
+
+    @Test
+    public void testQuadruplex5Cell() {
+        Quadruplex q = new Quadruplex(-0.25, -0.9393473, 2.0*sqrt(PI)/3.0-1.0, 2.0/PI-PI/4.0);
+
+        System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
+
+        Quadruplex x = q;
+        for (int i = 0; i < 20; i++) {
+            System.out.println(x);
+            x = x.multiply(q);
+        }
     }
 }
