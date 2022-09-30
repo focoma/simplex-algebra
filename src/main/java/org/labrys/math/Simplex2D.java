@@ -49,10 +49,10 @@ public class Simplex2D extends Number {
         return new Simplex2D(2*cos(radians)/3.0, 2*cos(radians + 2*TAU/3)/3.0, 2*cos(radians + TAU/3)/3.0);
     }
 
-    public Quaternion complexValue() {
-        return new Quaternion(r, 0, 0, 0)
-                .add(-q/2, q * Math.sqrt(3)/2, 0, 0)
-                .add(-d/2, -d * Math.sqrt(3)/2, 0, 0);
+    public Complex complexValue() {
+        return new Complex(r, 0)
+                .add(-q/2.0, q * Math.sqrt(3)/2.0)
+                .add(-d/2.0, -d * Math.sqrt(3)/2.0);
     }
 
     @Override

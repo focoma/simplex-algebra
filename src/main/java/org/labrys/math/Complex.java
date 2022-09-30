@@ -16,7 +16,23 @@ public class Complex extends Quaternion {
         }
     }
 
+    public static Complex exp(Complex c) {
+        return new Complex(Math.cos(c.i), Math.sin(c.i)).multiply(Math.exp(c.r)).complexValue();
+    }
+
+    public Complex add(double x, double y) {
+        return add(x, y, 0, 0).complexValue();
+    }
+
+    public Complex add(Complex c) {
+        return add(c.r, c.i, 0, 0).complexValue();
+    }
+
     public static Complex generateUnit(double radians) {
         return new Complex(Math.cos(radians), Math.sin(radians));
+    }
+
+    public Quadruplex quadruplexValue() {
+        return new Quadruplex(r, 0, i, 0);
     }
 }

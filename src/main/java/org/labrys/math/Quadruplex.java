@@ -75,6 +75,10 @@ public class Quadruplex extends Number {
         return r;
     }
 
+    public Complex complexValue() {
+        return new Complex(r, k);
+    }
+
     @Override
     public String toString() {
         return MessageFormat.format("{0,number,0.0000000} + {1,number,0.0000000}j + {2,number,0.0000000}k + {3,number,0.0000000}l", r, j, k, l);

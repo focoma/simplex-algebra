@@ -122,28 +122,25 @@ public class AppTest
     @Test
     public void findQuadruplex() {
         caseloop: for (int x = 0; x < 1000000000; x++) {
-            double r = -0.25;
-            double h = -0.939 - 0.001*random();
-            double h2 = 2.0*sqrt(PI)/3.0-1.0;
-            double h3 = -sqrt(1-r*r-h*h-h2*h2);
+            double r = random()*((int)(random()*100)%2==1?-1:1);
+            double h = sqrt(1-r*r)*random()*((int)(random()*100)%2==1?-1:1);
+            double h2 = sqrt(1-r*r-h*h)*random()*((int)(random()*100)%2==1?-1:1);
+            double h3 = sqrt(1-r*r-h*h-h2*h2)*random()*((int)(random()*100)%2==1?-1:1);
             Quadruplex b = new Quadruplex(r, h, h2, h3);
 
             Quadruplex q = b;
             boolean e = false;
             Quadruplex s = new Quadruplex(0,0,0,0);
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 20; i++) {
                 if (q.r > 1.5 || q.j > 1.5 || q.k > 1.5 || q.l > 1.5 || q.r < -1.5 || q.j < -1.5 || q.k < -1.5 || q.l < -1.5) {
                     continue caseloop;
                 }
                 s = s.add(q);
-                if (i==4 && q.r > 0.99 && q.r < 1.01 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
-                    e = true;
-                }
-                if (e && i==9 && q.r > 0.999 && q.r < 1.001 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
-                    if (MessageFormat.format("{0,number,0.0000000}",abs(s.r)).contains("0.00000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.j)).contains("0.00000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.k)).contains("0.00000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.l)).contains("0.00000")) {
+                if (i==15 && q.r > 0.999 && q.r < 1.001 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
+                    if (MessageFormat.format("{0,number,0.0000000}",abs(s.r)).contains("0.000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.j)).contains("0.000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.k)).contains("0.000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.l)).contains("0.000")) {
                         System.out.println((i + 1) + " x " + b + " = " + q);
                     }
                 }
@@ -168,7 +165,9 @@ public class AppTest
 
     @Test
     public void testQuadruplex5Cell() {
-        Quadruplex q = new Quadruplex(-0.25, -0.9393473, 2.0*sqrt(PI)/3.0-1.0, 2.0/PI-PI/4.0);
+        Quadruplex q = new Quadruplex(-0.25, 0.9393474323917527943, 0.18163563200134022, 0.1487780173496580);
+//        Quadruplex q = new Quadruplex(-0.25, -0.14877801734965796128, -0.1816356320013402215, -0.939347432391752794);
+//        Quadruplex q = new Quadruplex(-0.25, 0.52372049461429936568, 0.769420884293813351, -0.266848920427795467);
 
         System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
 
@@ -177,5 +176,32 @@ public class AppTest
             System.out.println(x);
             x = x.multiply(q);
         }
+    }
+
+    @Test
+    public void testTriplexExp() {
+        Triplex s = new Triplex(0,2*PI/4/sqrt(3),-2*PI/4/sqrt(3));
+        Triplex c = new Simplex3D(-sqrt(2)/2.0, 0, sqrt(2)/2.0, 0).triplexValue();
+        System.out.println(c);
+        Triplex x = Triplex.exp(c);
+
+        Triplex t = x;
+        for (int i = 1; i < 1000; i++) {
+            System.out.println(i + ": " + t);
+            t = t.multiply(x);
+        }
+        System.out.println();
+    }
+
+    @Test
+    public void testComplexExp() {
+        Complex s = Complex.exp(new Simplex2D(0, 1/sqrt(3), -1/sqrt(3)).complexValue());
+
+        Complex t = s;
+        for (int i = 0; i < 20; i++) {
+            System.out.println(t);
+            t = t.multiply(s).complexValue();
+        }
+        System.out.println();
     }
 }

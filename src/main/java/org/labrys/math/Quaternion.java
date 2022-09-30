@@ -34,7 +34,7 @@ public class Quaternion extends Number {
         return multiply(scalar, 0, 0, 0);
     }
 
-    public Quaternion multiply(Quaternion other) {
+    public <T extends Quaternion> Quaternion multiply(T other) {
         /**
          * (w + xi + yj + zk)(s + ci + qj + hk)
          * = ws + wcb + wqp + whg + xsb + xcbb + xqbp + xhbg + ysp + ycpb + yqpp + yhpg + zsg + zcgb + zqgp + zhgg
@@ -75,6 +75,10 @@ public class Quaternion extends Number {
     @Override
     public double doubleValue() {
         return r;
+    }
+
+    public Complex complexValue() {
+        return new Complex(r, i);
     }
 
     @Override
