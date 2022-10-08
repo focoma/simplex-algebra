@@ -6,10 +6,10 @@ import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
 
 public class Simplex3D extends Number {
-    private double r;
-    private double b;
-    private double p;
-    private double g;
+    public double r;
+    public double b;
+    public double p;
+    public double g;
 
     public Simplex3D() {
     }
@@ -91,7 +91,7 @@ public class Simplex3D extends Number {
         Simplex3D normalized = normalize();
         Triplex c = new Triplex(1, 1, 1)
                 .multiply(-1.0 / 3.0)
-                .add(0, 1.0 / sqrt(3.0), -1.0 / sqrt(3.0));
+                .add(0, -1.0 / sqrt(3.0), 1.0 / sqrt(3.0));
 
         return new Triplex(normalized.r, 0, 0)
                 .add(c.multiply(normalized.b))

@@ -132,15 +132,15 @@ public class AppTest
             boolean e = false;
             Quadruplex s = new Quadruplex(0,0,0,0);
             for (int i = 0; i < 20; i++) {
-                if (q.r > 1.5 || q.j > 1.5 || q.k > 1.5 || q.l > 1.5 || q.r < -1.5 || q.j < -1.5 || q.k < -1.5 || q.l < -1.5) {
+                if (q.r > 1.5 || q.h > 1.5 || q.i > 1.5 || q.ih > 1.5 || q.r < -1.5 || q.h < -1.5 || q.i < -1.5 || q.ih < -1.5) {
                     continue caseloop;
                 }
                 s = s.add(q);
-                if (i==15 && q.r > 0.999 && q.r < 1.001 && abs(q.j) < 0.01 && abs(q.k) < 0.01 && abs(q.l) < 0.01) {
+                if (i==15 && q.r > 0.999 && q.r < 1.001 && abs(q.h) < 0.01 && abs(q.i) < 0.01 && abs(q.ih) < 0.01) {
                     if (MessageFormat.format("{0,number,0.0000000}",abs(s.r)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.j)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.k)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.l)).contains("0.000")) {
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.h)).contains("0.000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.i)).contains("0.000")
+                            && MessageFormat.format("{0,number,0.0000000}",abs(s.ih)).contains("0.000")) {
                         System.out.println((i + 1) + " x " + b + " = " + q);
                     }
                 }
@@ -164,33 +164,65 @@ public class AppTest
     }
 
     @Test
-    public void testQuadruplex5Cell() {
-        Quadruplex q = new Quadruplex(-0.25, 0.9393474323917527943, 0.18163563200134022, 0.1487780173496580);
+    public void testQuadruplexExp() {
+        Quadruplex q = new Quadruplex(0, -PI/2, PI/2, -PI/2);
 //        Quadruplex q = new Quadruplex(-0.25, -0.14877801734965796128, -0.1816356320013402215, -0.939347432391752794);
 //        Quadruplex q = new Quadruplex(-0.25, 0.52372049461429936568, 0.769420884293813351, -0.266848920427795467);
 
-        System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
+//        System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
 
-        Quadruplex x = q;
-        for (int i = 0; i < 20; i++) {
+        Quadruplex exp = Quadruplex.exp(q);
+        Quadruplex x = exp;
+        for (int i = 0; i < 40; i++) {
             System.out.println(x);
-            x = x.multiply(q);
+            x = x.multiply(exp);
         }
     }
 
     @Test
     public void testTriplexExp() {
-        Triplex s = new Triplex(0,2*PI/4/sqrt(3),-2*PI/4/sqrt(3));
-        Triplex c = new Simplex3D(-sqrt(2)/2.0, 0, sqrt(2)/2.0, 0).triplexValue();
-        System.out.println(c);
-        Triplex x = Triplex.exp(c);
+//        Triplex s = new Triplex(0,2*PI/(4*sqrt(3)), -2*PI/(4*sqrt(3)));
+        Triplex s = new Simplex3D(0,1, 0,0).triplexValue();
+        System.out.println(s);
 
-        Triplex t = x;
-        for (int i = 1; i < 1000; i++) {
-            System.out.println(i + ": " + t);
-            t = t.multiply(x);
+        Triplex es = Triplex.exp(s);
+        Triplex nes = es.multiply(1);
+        Triplex x = nes;
+        for (int i=0; i<100; i++) {
+            System.out.println(x);
+            x = x.multiply(nes);
         }
-        System.out.println();
+
+//        System.out.println(Triplex.exp(s));
+//        for (int z=0; z<10000000; z++) {
+//            try {
+//                double r = random() * ((int) (random() * 100) % 2 == 1 ? -1 : 1) * ((int) (random() * 100) % 3 == 1 ? 0 : 1);
+//                double h = (r < 0.5 && (int) (random() * 100) % 4 == 1 ? r : sqrt(1 - r * r) * random()) * ((int) (random() * 100) % 2 == 1 ? -1 : 1) * ((int) (random() * 100) % 3 == 1 ? 0 : 1);
+////            double h2 = sqrt(1 - r * r - h * h);
+//                double h2 = (h < 0.5 && (int) (random() * 100) % 4 == 1 ? h : sqrt(1 - r * r - h * h) * random()) * ((int) (random() * 100) % 2 == 1 ? -1 : 1) * ((int) (random() * 100) % 3 == 1 ? 0 : 1);
+//                double h3 = sqrt(1 - r * r - h * h - h2 * h2);
+//
+//                Simplex3D cp = new Simplex3D((2 * PI) * r, (2 * PI) * h, (2 * PI) * h3, (2 * PI) * h2);
+//                Triplex c = cp.triplexValue();
+////            Triplex c = new Triplex(r, h, h2);
+//
+//                Triplex x = Triplex.exp(c);
+//                if (x.r > -0.3345 && x.r < -0.3312 && x.j < 1 && x.k < 1) {
+//                    Triplex t = x;
+//                    for (int i = 1; i < 11; i++) {
+//                        if (i > 2 && abs(t.r) > 0.99 && abs(t.j) < 0.1 && abs(t.k) < 0.1) {
+////                        System.out.println("Simplex: " + cp);
+//                            System.out.println("Triplex: " + c);
+//                            System.out.println("Exponent: " + Triplex.exp(c));
+//                            System.out.println(i + ": " + t);
+//                            t = t.multiply(x);
+//                        }
+//                    }
+//                }
+//            } catch (Exception e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
     }
 
     @Test
@@ -203,5 +235,12 @@ public class AppTest
             t = t.multiply(s).complexValue();
         }
         System.out.println();
+    }
+
+    @Test
+    public void testTrirational() {
+        Trirational x = new Trirational(2, 3, 5);
+        System.out.println(x.add(7,3,5));
+        //4.5388936▶3.2423541▶4.6262684
     }
 }

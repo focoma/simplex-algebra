@@ -1,5 +1,7 @@
 package org.labrys.math;
 
+import static java.lang.Math.*;
+
 public class Complex extends Quaternion {
     public Complex(double r, double i) {
         super(r, i, 0, 0);
@@ -16,23 +18,39 @@ public class Complex extends Quaternion {
         }
     }
 
-    public static Complex exp(Complex c) {
-        return new Complex(Math.cos(c.i), Math.sin(c.i)).multiply(Math.exp(c.r)).complexValue();
+    public Complex add(Complex other) {
+        return super.add(other).complexValue();
     }
 
     public Complex add(double x, double y) {
         return add(x, y, 0, 0).complexValue();
     }
 
-    public Complex add(Complex c) {
-        return add(c.r, c.i, 0, 0).complexValue();
+    public Complex multiply(double scalar) {
+        return super.multiply(scalar).complexValue();
+    }
+
+    public Complex multiply(Complex other) {
+        return super.multiply(other).complexValue();
+    }
+
+    public static Complex exp(Complex c) {
+        return new Complex(cos(c.i), sin(c.i)).multiply(Math.exp(c.r)).complexValue();
+    }
+
+    public double modulus() {
+        return sqrt(r*r + i*i);
     }
 
     public static Complex generateUnit(double radians) {
-        return new Complex(Math.cos(radians), Math.sin(radians));
+        return new Complex(cos(radians), sin(radians));
     }
 
     public Quadruplex quadruplexValue() {
         return new Quadruplex(r, 0, i, 0);
+    }
+
+    public Trirational trirationalValue() {
+        return new Trirational(modulus(),Math.exp(atan2(i,r)/sqrt(3)),Math.exp(-atan2(i,r)/sqrt(3)));
     }
 }
