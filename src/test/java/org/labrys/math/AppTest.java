@@ -152,12 +152,12 @@ public class AppTest
 
     @Test
     public void testQuadruplexTetrahedron() {
-        Quadruplex q = new Quadruplex(0.5, 0, 0.5, -sqrt(2)/2.0);
+        Quadruplex q = new Simplex4D(0,1,0,0,0).quadruplexValue();
 
         System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
 
         Quadruplex x = q;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             System.out.println(x);
             x = x.multiply(q);
         }
@@ -239,8 +239,40 @@ public class AppTest
 
     @Test
     public void testTrirational() {
-        Trirational x = new Trirational(2, 3, 5);
-        System.out.println(x.add(7,3,5));
-        //4.5388936▶3.2423541▶4.6262684
+        Simplex2D x = new Simplex2D(0, 1, 0);
+        Complex c = x.complexValue();
+        Quadruplex q = x.quadruplexValue();
+        System.out.println(x.multiply(x.multiply(x)));
+        System.out.println(c.multiply(c.multiply(c)));
+        System.out.println(q.multiply(q.multiply(q)));
+    }
+
+    @Test
+    public void test4Rationals() {
+        System.out.println(Triplex.exp(new Simplex3D(log(2), 0, 0, 0).triplexValue())
+                .multiply(Triplex.exp(new Simplex3D(0, log(5), 0, 0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex3D(0, 0, log(5), 0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex3D(0, 0, 0, log(5)).triplexValue())));
+    }
+
+    @Test
+    public void test5Rationals() {
+        for (int i=0; i<10000000; i++) {
+            double a = random()*((int)(random()*100)%3==1?-1:1)*((int)(random()*100)%9==1?0:1);
+            double b = random()*((int)(random()*100)%9==1?0:1);
+            double c = random()*((int)(random()*100)%9==1?0:1);
+            double d = random()*((int)(random()*100)%9==1?0:1);
+            double e = random()*((int)(random()*100)%9==1?0:1);
+            Quadruplex x1 = new Quadruplex(a, 0, 0, 0)
+                    .multiply(Quadruplex.exp(new Simplex4D(0, log(b), 0, 0, 0).quadruplexValue()))
+                    .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(c), 0, 0).quadruplexValue()))
+                    .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, log(d), 0).quadruplexValue()))
+                    .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, 0, log(e)).quadruplexValue()));
+            if (abs(x1.h) < 0.0001 && abs(x1.ih) < 0.0001 && abs(x1.r) > 0.1 && abs(x1.i) > 0.1) {
+                System.out.println(x1 + ": " + a + "\u25B6" + b + "\u25B6" + c + "\u25B6" + d + "\u25B6" + e);
+            }
+        }
+
+//        System.out.println(new Trirational(2,5, 3).add(2,5,5).quadruplexValue());
     }
 }

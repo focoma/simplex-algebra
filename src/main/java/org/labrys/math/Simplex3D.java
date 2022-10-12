@@ -22,9 +22,8 @@ public class Simplex3D extends Number {
     }
 
     public Simplex3D normalize() {
-        double min1 = min(b, g);
-        double min2 = min(p, min1);
-        return new Simplex3D(r-min2, b-min2, p-min2, g-min2);
+        double min = min(r, min(b, min(p, g)));
+        return new Simplex3D(r-min, b-min, p-min, g-min);
     }
 
     public Simplex3D add(double w, double x, double y, double z) {
@@ -49,10 +48,6 @@ public class Simplex3D extends Number {
          * = ws + wcb + wqp + whg + xsb + xcbb + xqbp + xhbg + ysp + ycpb + yqpp + yhpg + zsg + zcgb + zqgp + zhgg
          * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + xqbp + xhbg + ycpb + yqpp + yhpg + zcgb + zqgp + zhgg
          *
-         * Commutative:
-         * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + (xq + yc)bp + (xh + zc)bg + yqpp + (yh + zq)pg + zhgg
-         *
-         * Simplectic:
          * = ws + xh + zc + yq + (wc + xs + yh + zq)b + (wq + ys + xc + zh)p + (wh + zs + xq + yc)g
          */
         Simplex3D product = new Simplex3D(r * other.r + b * other.g + g * other.b + p * other.p,
@@ -89,14 +84,19 @@ public class Simplex3D extends Number {
 
     public Triplex triplexValue() {
         Simplex3D normalized = normalize();
-        Triplex c = new Triplex(1, 1, 1)
-                .multiply(-1.0 / 3.0)
-                .add(0, -1.0 / sqrt(3.0), 1.0 / sqrt(3.0));
+        Triplex c = basisTriplex();
 
         return new Triplex(normalized.r, 0, 0)
                 .add(c.multiply(normalized.b))
                 .add(c.multiply(c).multiply(normalized.p))
                 .add(c.multiply(c).multiply(c).multiply(normalized.g));
+    }
+
+    private Triplex basisTriplex() {
+        Triplex c = new Triplex(1, 1, 1)
+                .multiply(-1.0 / 3.0)
+                .add(0, -1.0 / sqrt(3.0), 1.0 / sqrt(3.0));
+        return c;
     }
 
     @Override

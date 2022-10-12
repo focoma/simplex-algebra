@@ -36,14 +36,24 @@ public class Trirational {
     }
 
     public Trirational add(Trirational other) {
-        double newR = sqrt(r * r + other.r*other.r * d1 * d2 / (other.d1 * other.d2) + 2 * r * other.r * sqrt(d1 * d2 / (other.d1 * other.d2)) * cos(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2));
-        double newTheta = atan2(other.r/sqrt(other.d1*other.d2)*sin(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2), r/sqrt(d1*d2) + other.r/(other.d1*other.d2)*cos(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2));
+        double newR = sqrt(r*r + other.r*other.r*d1*d2/(other.d1*other.d2) + (2*r*other.r*sqrt(d1*d2/(other.d1*other.d2))) * cos(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2));
+        double newTheta = atan2((other.r/sqrt(other.d1*other.d2))*sin(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2), r/sqrt(d1*d2) + (other.r/sqrt(other.d1*other.d2))*cos(log(other.d1*d2/(other.d2*d1))*sqrt(3)/2));
 
         return new Trirational(newR, d1*Math.exp(newTheta/sqrt(3)), d2*Math.exp(-newTheta/sqrt(3)));
+
+//        return complexValue().add(other.complexValue()).trirationalValue();
     }
 
     public Complex complexValue() {
-        return Complex.generateUnit(sqrt(3)*log(d1/d2)/2).multiply(r/sqrt(d1*d2));
+        return new Complex(r,0)
+                .multiply(Complex.exp(new Simplex2D(0,log(d1),0).complexValue()))
+                .multiply(Complex.exp(new Simplex2D(0,0,log(d2)).complexValue()));
+    }
+
+    public Quadruplex quadruplexValue() {
+        return new Quadruplex(r,0,0,0)
+                .multiply(Quadruplex.exp(new Simplex2D(0,log(d1),0).quadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex2D(0,0,log(d2)).quadruplexValue()));
     }
 
     @Override

@@ -50,9 +50,27 @@ public class Simplex2D extends Number {
     }
 
     public Complex complexValue() {
+        Complex o = basisComplex();
         return new Complex(r, 0)
-                .add(-q/2.0, q * Math.sqrt(3)/2.0)
-                .add(-d/2.0, -d * Math.sqrt(3)/2.0);
+                .add(o.multiply(q))
+                .add(o.multiply(o).multiply(d));
+    }
+
+    public Quadruplex quadruplexValue() {
+        Quadruplex b = basisQuadruplex();
+        return new Quadruplex(r,0,0,0)
+                .add(b.multiply(this.q))
+                .add(b.multiply(b).multiply(d));
+    }
+
+    private Quadruplex basisQuadruplex() {
+        Quadruplex q = new Quadruplex(-0.5, 0, Math.sqrt(3)/2.0, 0);
+        return q;
+    }
+
+    private Complex basisComplex() {
+        Complex o = new Complex(-0.5, Math.sqrt(3)/2.0);
+        return o;
     }
 
     @Override

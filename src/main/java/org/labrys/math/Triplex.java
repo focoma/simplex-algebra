@@ -88,12 +88,6 @@ public class Triplex extends Number {
         return new Triplex(A(t.k), C(t.k), B(t.k)).multiply(A(t.j), B(t.j), C(t.j)).multiply(Math.exp(t.r));
     }
 
-    public static Triplex log(Triplex t) {
-        return new Triplex(Math.log(abs(pow(t.r,3) + pow(t.j,3) + pow(t.k,3)) - abs(3*t.r*t.j*t.k))/3.0,
-                (Math.log((abs(t.r) + abs(t.j) + abs(t.k))/sqrt(t.r*t.r + t.j*t.j + t.k*t.k - t.r*t.j - t.r*t.k - t.j*t.k)) + sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r - t.j - t.k)))/3.0,
-                (Math.log((abs(t.r) + abs(t.j) + abs(t.k))/sqrt(t.r*t.r + t.j*t.j + t.k*t.k - t.r*t.j - t.r*t.k - t.j*t.k)) - sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r - t.j - t.k)))/3.0);
-    }
-
     public static double A(double a) {
         return (2.0*Math.exp(-a/2.0) * cos(sqrt(3)*a/2.0) + Math.exp(a))/3.0;
     }

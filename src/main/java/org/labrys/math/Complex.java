@@ -1,5 +1,7 @@
 package org.labrys.math;
 
+import java.text.MessageFormat;
+
 import static java.lang.Math.*;
 
 public class Complex extends Quaternion {
@@ -35,7 +37,7 @@ public class Complex extends Quaternion {
     }
 
     public static Complex exp(Complex c) {
-        return new Complex(cos(c.i), sin(c.i)).multiply(Math.exp(c.r)).complexValue();
+        return new Complex(cos(c.i), sin(c.i)).multiply(Math.exp(c.r));
     }
 
     public double modulus() {
@@ -52,5 +54,10 @@ public class Complex extends Quaternion {
 
     public Trirational trirationalValue() {
         return new Trirational(modulus(),Math.exp(atan2(i,r)/sqrt(3)),Math.exp(-atan2(i,r)/sqrt(3)));
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format("{0,number,0.0000} + {1,number,0.0000}i", r, i);
     }
 }
