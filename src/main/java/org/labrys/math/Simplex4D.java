@@ -76,7 +76,6 @@ public class Simplex4D extends Number {
     }
 
     public Quadruplex quadruplexValue() {
-        // TODO
         Simplex4D normalized = normalize();
         Quadruplex q = basisQuadruplex();
 
@@ -87,12 +86,32 @@ public class Simplex4D extends Number {
                 .add(q.multiply(q).multiply(q).multiply(q).multiply(normalized.f4));
     }
 
+    public Quadruplex altQuadruplexValue() {
+        Simplex4D normalized = normalize();
+        Quadruplex q = altBasisQuadruplex();
+
+        return new Quadruplex(normalized.r, 0, 0, 0)
+                .add(q.multiply(normalized.f))
+                .add(q.multiply(q).multiply(normalized.f2))
+                .add(q.multiply(q).multiply(q).multiply(normalized.f3))
+                .add(q.multiply(q).multiply(q).multiply(q).multiply(normalized.f4));
+    }
+
     public static Quadruplex basisQuadruplex() {
+        double sr = sqrt(5 + sqrt(5) + sqrt(5*(5 + 2*sqrt(5))));
+        Quadruplex q = new Quadruplex(-0.25,
+                0.25*sr,
+                0.25 - (11.0/8.0)*pow(sr,2) + (9.0/20.0)*pow(sr,4) - (1.0/40.0)*pow(sr,6),
+                (23.0/8.0)*sr - 4*pow(sr,3) + (39.0/40.0)*pow(sr,5) - (1.0/20.0)*pow(sr,7));
+        return q;
+    }
+
+    public static Quadruplex altBasisQuadruplex() {
         double sr = sqrt(5 + sqrt(5) - sqrt(5*(5 + 2*sqrt(5))));
         Quadruplex q = new Quadruplex(-0.25,
-                -0.25*sr,
+                0.25*sr,
                 0.25 - (11.0/8.0)*pow(sr,2) + (9.0/20.0)*pow(sr,4) - (1.0/40.0)*pow(sr,6),
-                (-23.0/8.0)*sr + 4*pow(sr,3) - (39.0/40.0)*pow(sr,5) + (1.0/20.0)*pow(sr,7));
+                (23.0/8.0)*sr - 4*pow(sr,3) + (39.0/40.0)*pow(sr,5) - (1.0/20.0)*pow(sr,7));
         return q;
     }
 

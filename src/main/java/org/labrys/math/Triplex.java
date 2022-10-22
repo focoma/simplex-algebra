@@ -49,10 +49,10 @@ public class Triplex extends Number {
     }
 
     public Triplex conjugate() {
-        return new Triplex(r*r - j * k, k * k - r* j, j * j - r* k);
+        return new Triplex(r*r - j*k, k*k - r*j, j*j - r*k);
     }
 
-    public double norm() {
+    public double modulus() {
         return abs(cbrt(multiply(conjugate()).r));
     }
 

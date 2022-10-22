@@ -74,6 +74,21 @@ public class Quadruplex extends Number {
         return (sin(d/sqrt(2))*cosh(d/sqrt(2)) - cos(d/sqrt(2))*sinh(d/sqrt(2)))/sqrt(2);
     }
 
+    public Quadruplex conjugate() {
+        return new Quadruplex(pow(r,3)+r*(2*h*ih+pow(i,2))+i*(pow(ih,2)-pow(h,2)),
+                -(pow(r,2)*h+2*r*i*ih+pow(h,2)*ih-h*pow(i,2)+pow(ih,3)),
+                -pow(r,2)*i+r*(pow(h,2)-pow(ih,2))+2*h*i*ih-pow(i,3),
+                -(ih*(pow(r,2)-pow(i,2))+h*(pow(ih,2)-2*r*i)+pow(h,3)));
+    }
+
+    public double norm() {
+        return multiply(conjugate()).r;
+    }
+
+    public double modulus() {
+        return pow(abs(norm()),0.25);
+    }
+
     public Quaternion quaternionValue() {
         return new Quaternion(r, h, i, ih);
     }
