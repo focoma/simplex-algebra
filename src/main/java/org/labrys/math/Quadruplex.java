@@ -89,6 +89,10 @@ public class Quadruplex extends Number {
         return pow(abs(norm()),0.25);
     }
 
+    public double euclideanNorm() {
+        return sqrt(pow(r,2) + pow(h,2) + pow(i,2) + pow(ih,2));
+    }
+
     public Quaternion quaternionValue() {
         return new Quaternion(r, h, i, ih);
     }

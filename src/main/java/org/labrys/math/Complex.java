@@ -41,7 +41,15 @@ public class Complex extends Quaternion {
     }
 
     public double modulus() {
-        return sqrt(r*r + i*i);
+        return sqrt(norm());
+    }
+
+    public double norm() {
+        return multiply(conjugate()).r;
+    }
+
+    public Complex conjugate() {
+        return new Complex(r, -i);
     }
 
     public static Complex generateUnit(double radians) {

@@ -73,6 +73,22 @@ public class Simplex2D extends Number {
         return o;
     }
 
+    public static Simplex2D exp(Simplex2D t) {
+        return new Simplex2D(A(t.d), C(t.d), B(t.d)).multiply(A(t.q), B(t.q), C(t.q)).multiply(Math.exp(t.r)).normalize();
+    }
+
+    public static double A(double a) {
+        return (2.0*Math.exp(-a/2.0) * cos(sqrt(3)*a/2.0) + Math.exp(a))/3.0;
+    }
+
+    public static double B(double b) {
+        return (2.0*Math.exp(-b/2.0) * cos(sqrt(3)*b/2.0 - 2.0*PI/3.0) + Math.exp(b))/3.0;
+    }
+
+    public static double C(double c) {
+        return (2.0*Math.exp(-c/2.0) * cos(sqrt(3)*c/2.0 + 2.0*PI/3.0) + Math.exp(c))/3.0;
+    }
+
     @Override
     public int intValue() {
         return (int)r;

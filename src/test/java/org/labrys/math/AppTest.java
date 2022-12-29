@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.text.MessageFormat;
 
 import static java.lang.Math.*;
+import static java.lang.Math.PI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -17,7 +18,8 @@ public class AppTest
     @Test
     public void testTriplex() {
 
-        System.out.println(new Triplex(2,2,0).multiply(new Simplex3D(0,0,0,-1).triplexValue()));
+        Triplex x = new Triplex(0, 1.0 / sqrt(3), -1.0 / sqrt(3));
+        System.out.println(x.multiply(x));
     }
 
     @Test
@@ -29,9 +31,12 @@ public class AppTest
 
     @Test
     public void testConjugate() {
-        Triplex triplex = new Simplex3D(0,1,0,0).triplexValue();
+        Triplex triplex = new Triplex(0,0.5,0.5);
         System.out.println(triplex);
         System.out.println(triplex.conjugate());
+        System.out.println(triplex.conjugate().conjugate());
+        System.out.println(triplex.conjugate().conjugate().conjugate());
+        System.out.println(triplex.conjugate().conjugate().conjugate().conjugate());
         System.out.println(triplex.multiply(triplex.conjugate()));
         System.out.println(triplex.modulus());
     }
@@ -121,101 +126,78 @@ public class AppTest
     }
 
     @Test
-    public void findQuadruplex() {
-        caseloop: for (int x = 0; x < 1000000000; x++) {
-            double r = random()*((int)(random()*100)%2==1?-1:1);
-            double h = sqrt(1-r*r)*random()*((int)(random()*100)%2==1?-1:1);
-            double h2 = sqrt(1-r*r-h*h)*random()*((int)(random()*100)%2==1?-1:1);
-            double h3 = sqrt(1-r*r-h*h-h2*h2)*random()*((int)(random()*100)%2==1?-1:1);
-            Quadruplex b = new Quadruplex(r, h, h2, h3);
+    public void testSimplex() {
+        Simplex4D s = new Simplex4D(0, 1, 0, 0, 0);
 
-            Quadruplex q = b;
-            boolean e = false;
-            Quadruplex s = new Quadruplex(0,0,0,0);
-            for (int i = 0; i < 20; i++) {
-                if (q.r > 1.5 || q.h > 1.5 || q.i > 1.5 || q.ih > 1.5 || q.r < -1.5 || q.h < -1.5 || q.i < -1.5 || q.ih < -1.5) {
-                    continue caseloop;
-                }
-                s = s.add(q);
-                if (i==15 && q.r > 0.999 && q.r < 1.001 && abs(q.h) < 0.01 && abs(q.i) < 0.01 && abs(q.ih) < 0.01) {
-                    if (MessageFormat.format("{0,number,0.0000000}",abs(s.r)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.h)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.i)).contains("0.000")
-                            && MessageFormat.format("{0,number,0.0000000}",abs(s.ih)).contains("0.000")) {
-                        System.out.println((i + 1) + " x " + b + " = " + q);
-                    }
-                }
-                q = q.multiply(b);
-            }
-//            System.out.println(b);
-        }
-    }
-
-    @Test
-    public void testQuadruplexFiveCell() {
-        Quadruplex q = new Simplex4D(0,1,0,0,0).quadruplexValue();
-
-        System.out.println(q.add(q.multiply(q)).add(q.multiply(q).multiply(q)).add(q.multiply(q).multiply(q).multiply(q)).add(1));
-
-        Quadruplex x = q;
-        for (int i = 0; i < 5; i++) {
-            System.out.println(x.conjugate());
-            x = x.multiply(q);
+        Simplex4D x = s;
+        for (int i=0; i < 5; x = x.multiply(s), i++) {
+            System.out.println(x.altQuadruplexValue());
         }
     }
 
     @Test
     public void testQuadruplexConjugate() {
-        for (int i=1; i<20; i*=2) {
-            Quadruplex sum = new Quadruplex(0,0,0,0);
-            for (int j=1; j<20; j*=2) {
-                Quadruplex dividend = new Simplex4D(j&1, (j&2)/2.0, (j&4)/4.0, (j&8)/8.0, (j&16)/16.0).quadruplexValue();
-                Quadruplex divisor = new Simplex4D(i&1, (i&2)/2.0, (i&4)/4.0, (i&8)/8.0, (i&16)/16.0).quadruplexValue();
-                Quadruplex divisorConjugate = divisor.conjugate();
-                Quadruplex quotient = dividend.multiply(divisorConjugate).multiply(1 / divisor.norm());
-                System.out.println(dividend + "/" + divisor + "=" + quotient);
-                if (i==j) {
-                    assertEquals(1, quotient.r, 0.001);
-                    assertEquals(0, quotient.h, 0.001);
-                    assertEquals(0, quotient.i, 0.001);
-                    assertEquals(0, quotient.ih, 0.001);
-                } else {
-                    assertEquals(-0.25, quotient.r, 0.001);
-                }
-                sum = sum.add(quotient);
+        Quadruplex q1 = new Quadruplex(2, 0, 3, 0);
+        Complex q2 = q1.complexValue();
+        System.out.println(q1.conjugate());
+        System.out.println(q1.conjugate().conjugate());
+        System.out.println(q2.conjugate());
+        System.out.println(q2.conjugate().conjugate());
+        System.out.println(q1.multiply(q1.conjugate()));
+        System.out.println(q2.multiply(q2.conjugate()));
+    }
+
+    @Test
+    public void testTriplexSqrt() {
+        Triplex nj = new Triplex(0,-1,0);
+
+        for (int i = 0; i < 100000000; i++) {
+            double r = random() * (((int)(random() * 100)) % 2 == 1 ? -1 : 1) * (((int)(random() * 100)) % 2 == 1 ? 0 : 1);
+            double j = random() * (((int)(random() * 100)) % 2 == 1 ? -1 : 1) * (((int)(random() * 100)) % 2 == 1 ? 0 : 1);
+            double k = random() * (((int)(random() * 100)) % 2 == 1 ? -1 : 1) * (((int)(random() * 100)) % 2 == 1 ? 0 : 1);
+
+            Triplex os = new Triplex(r, j, k);
+            Triplex s = os.multiply(os);
+
+            if (abs(s.r-nj.r) < 0.0001 && abs(s.j-nj.j) < 0.0001 && abs(s.k-nj.k) < 0.0001) {
+                System.out.println(os);
             }
-            assertEquals(0, sum.r, 0.001);
-            assertEquals(0, sum.h, 0.001);
-            assertEquals(0, sum.i, 0.001);
-            assertEquals(0, sum.ih, 0.001);
-            System.out.println();
         }
     }
 
     @Test
-    public void testTriplexExp() {
-//        for (int j=0; j<10000000; j++) {
-        Triplex c = new Triplex(0,2*PI/(6*sqrt(3)), -2*PI/(6*sqrt(3)));
-//        Simplex3D s = new Simplex3D(0, 0, -2 * PI * random(), 0);
-        Triplex es = Triplex.exp(c);
-        Triplex nes = es.multiply(1);
-        Triplex x = nes;
-        for (int i = 1; i < 9; i++) {
-            System.out.println(x);
-            x = x.multiply(nes);
+    public void testQuadruplex() {
+        Quadruplex q = new Quadruplex(-0.5, -0.5, -0.5, -0.5)
+                .add(-1, 0, 0, 0)
+                .add(-0.5, -0.5, 0.5, 0.5)
+                .add(0,-1,0,0).multiply(0.25);
+        System.out.println(q + " " + q.euclideanNorm());
+//        q = Quadruplex.exp(q);
+        Quadruplex c = q;
+        for (int i = 0; i < 50; i++) {
+            System.out.println(c + " " + c.euclideanNorm());
+            c = c.multiply(q);
         }
     }
 
     @Test
-    public void testTrirational() {
-        Trirational x = new Trirational(1,2,3);
-        Trirational y = new Trirational(5,7,11);
-        Trirational z = new Trirational(13,17,19);
+    public void testQTriplexUnitVectors() {
+        Triplex q = new Triplex(0, 1.0/sqrt(3), -1.0/sqrt(3));
+        System.out.println(q.euclideanNorm());
+        Triplex c = q;
+        for (int i = 0; i < 10; i++) {
+            System.out.println(c);
+            c = c.multiply(q);
+        }
+    }
 
-        System.out.println(x.add(y).multiply(z));
-        System.out.println(x.multiply(z).add(y.multiply(z)));
-        System.out.println(z.multiply(x.add(y)));
-        System.out.println(z.multiply(x).add(z.multiply(y)));
+    @Test
+    public void testTrirationals() {
+        Trirational tc1 = new Trirational(-5, 3, 7);
+        Trirational tc2 = new Trirational(5, 3*exp(PI/sqrt(3)), 7*exp(-PI/sqrt(3)));
+
+        System.out.println(tc1.complexValue());
+        System.out.println(tc2.complexValue());
     }
 
     @Test
@@ -239,6 +221,11 @@ public class AppTest
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(5), 0, 0).quadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, log(7), 0).quadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, 0, log(11)).quadruplexValue()));
+        Quadruplex x1inverse = new Quadruplex(1.0/13.0, 0, 0, 0)
+                .multiply(Quadruplex.exp(new Simplex4D(0, log(1.0/3.0), 0, 0, 0).quadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(1.0/5.0), 0, 0).quadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, log(1.0/7.0), 0).quadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, 0, log(1.0/11.0)).quadruplexValue()));
         Quadruplex x1product = numerator.multiply(numerator)
                 .multiply(Quadruplex.exp(new Simplex4D(0, log(9), 0, 0, 0).quadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(25), 0, 0).quadruplexValue()))
@@ -254,6 +241,11 @@ public class AppTest
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(5), 0, 0).altQuadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, log(7), 0).altQuadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, 0, log(11)).altQuadruplexValue()));
+        Quadruplex x2inverse = new Quadruplex(1.0/13.0, 0, 0, 0)
+                .multiply(Quadruplex.exp(new Simplex4D(0, log(1.0/3.0), 0, 0, 0).altQuadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(1.0/5.0), 0, 0).altQuadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, log(1.0/7.0), 0).altQuadruplexValue()))
+                .multiply(Quadruplex.exp(new Simplex4D(0, 0, 0, 0, log(1.0/11.0)).altQuadruplexValue()));
         Quadruplex x2product = numerator.multiply(numerator)
                 .multiply(Quadruplex.exp(new Simplex4D(0, log(9), 0, 0, 0).altQuadruplexValue()))
                 .multiply(Quadruplex.exp(new Simplex4D(0, 0, log(25), 0, 0).altQuadruplexValue()))
@@ -266,10 +258,17 @@ public class AppTest
         System.out.println(x1.add(x1));
         System.out.println(x1product);
         System.out.println(x1.multiply(x1));
+        System.out.println(x1inverse);
+        System.out.println(x1.conjugate().multiply(1/x1.norm()));
+
+        System.out.println();
+
         System.out.println(x2);
         System.out.println(x2sum);
         System.out.println(x2.add(x2));
         System.out.println(x2product);
         System.out.println(x2.multiply(x2));
+        System.out.println(x2inverse);
+        System.out.println(x2.conjugate().multiply(1/x2.norm()));
     }
 }

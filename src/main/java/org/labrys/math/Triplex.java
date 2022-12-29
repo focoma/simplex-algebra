@@ -56,6 +56,14 @@ public class Triplex extends Number {
         return abs(cbrt(multiply(conjugate()).r));
     }
 
+    public double norm() {
+        return multiply(conjugate()).r;
+    }
+
+    public double euclideanNorm() {
+        return sqrt(pow(r,2) + pow(j,2) + pow(k,2));
+    }
+
     public Quaternion quaternionValue() {
         return new Quaternion(0, r, j, k);
     }
