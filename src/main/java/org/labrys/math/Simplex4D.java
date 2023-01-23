@@ -97,6 +97,28 @@ public class Simplex4D extends Number {
                 .add(q.multiply(q).multiply(q).multiply(q).multiply(normalized.f4));
     }
 
+    public Tessarine tessarineValue() {
+        Simplex4D normalized = normalize();
+        Tessarine q = basisTessarine();
+
+        return new Tessarine(normalized.r, 0, 0, 0)
+                .add(q.multiply(normalized.f))
+                .add(q.multiply(q).multiply(normalized.f2))
+                .add(q.multiply(q).multiply(q).multiply(normalized.f3))
+                .add(q.multiply(q).multiply(q).multiply(q).multiply(normalized.f4));
+    }
+
+    public Tessarine altTessarineValue() {
+        Simplex4D normalized = normalize();
+        Tessarine q = altBasisTessarine();
+
+        return new Tessarine(normalized.r, 0, 0, 0)
+                .add(q.multiply(normalized.f))
+                .add(q.multiply(q).multiply(normalized.f2))
+                .add(q.multiply(q).multiply(q).multiply(normalized.f3))
+                .add(q.multiply(q).multiply(q).multiply(q).multiply(normalized.f4));
+    }
+
     public static Quadruplex basisQuadruplex() {
         double sr = sqrt(5 + sqrt(5) + sqrt(5*(5 + 2*sqrt(5))));
         Quadruplex q = new Quadruplex(-0.25,
@@ -112,6 +134,24 @@ public class Simplex4D extends Number {
                 0.25*sr,
                 0.25 - (11.0/8.0)*pow(sr,2) + (9.0/20.0)*pow(sr,4) - (1.0/40.0)*pow(sr,6),
                 (23.0/8.0)*sr - 4*pow(sr,3) + (39.0/40.0)*pow(sr,5) - (1.0/20.0)*pow(sr,7));
+        return q;
+    }
+
+    public static Tessarine basisTessarine() {
+        double sr = 5 + 2*sqrt(5);
+        Tessarine q = new Tessarine(-0.25,
+                0.25*sqrt(sr),
+                sqrt(5)/4,
+                1/20.0*(10*sqrt(5*sr)-sqrt(5)*pow(sr,3/2.0)));
+        return q;
+    }
+
+    public static Tessarine altBasisTessarine() {
+        double sr = 5 - 2*sqrt(5);
+        Tessarine q = new Tessarine(-0.25,
+                0.25*sqrt(sr),
+                sqrt(5)/4,
+                1/20.0*(10*sqrt(5*sr)-sqrt(5)*pow(sr,3/2.0)));
         return q;
     }
 

@@ -37,15 +37,6 @@ public class Quaternion extends Number {
     public <T extends Quaternion> Quaternion multiply(T other) {
         /**
          * (w + xi + yj + zk)(s + ci + qj + hk)
-         * = ws + wcb + wqp + whg + xsb + xcbb + xqbp + xhbg + ysp + ycpb + yqpp + yhpg + zsg + zcgb + zqgp + zhgg
-         * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + xqbp + xhbg + ycpb + yqpp + yhpg + zcgb + zqgp + zhgg
-         *
-         * Commutative:
-         * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + (xq + yc)bp + (xh + zc)bg + yqpp + (yh + zq)pg + zhgg
-         *
-         * Non-Commutative:
-         * = ws + (wc + xs)b + (wq + ys)p + (wh + zs)g + xcbb + (xq - yc)bp + (-xh + zc)bg + yqpp + (yh - zq)pg + zhgg
-         *
          * Quaternion:
          * = ws - xc - yq - zh + (wc + xs + yh - zq)i + (wq + ys - xh + zc)j + (wh + zs + xq - yc)k
          */

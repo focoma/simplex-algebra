@@ -93,6 +93,10 @@ public class Quadruplex extends Number {
         return sqrt(pow(r,2) + pow(h,2) + pow(i,2) + pow(ih,2));
     }
 
+    public Tessarine tessarineValue() {
+        return new Tessarine(r, i, (h-ih)/sqrt(2), (h+ih)/sqrt(2));
+    }
+
     public Quaternion quaternionValue() {
         return new Quaternion(r, h, i, ih);
     }
