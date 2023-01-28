@@ -18,14 +18,13 @@ public class AppTest
     @Test
     public void testTriplex() {
 
-        System.out.println(new Triplex(5,0,0)
-                .multiply(Triplex.exp(new Triplex(0,log(5),0)))
-                .multiply(Triplex.exp(new Triplex(0,0,log(5)))));
+        Triplex t = Triplex.exp(new Triplex(0, 2*PI / (sqrt(3)), -2*PI / (sqrt(3))));
+        System.out.println(t + " norm:" + t.euclideanNorm());
     }
 
     @Test
     public void testTessarine() {
-        Tessarine t = new Simplex4D(0, 1, 0, 0, 0).altTessarineValue();
+        Tessarine t = new Tessarine(0.5, -0.5, 0.5, 0.5);
 //        t = Tessarine.exp(t);
 
         Tessarine v = t;
@@ -34,13 +33,17 @@ public class AppTest
             v = v.multiply(t);
         }
 
-//        t = new Tessarine(0, 1 / 2.0, 0, -1 / 2.0);
         Quadruplex q = t.quadruplexValue();
-//        q = Quadruplex.exp(q);
         Quadruplex v2 = q;
         for (int i=0; i<5; i++) {
             System.out.println(v2);
             v2 = v2.multiply(q);
+        }
+
+        v = q.tessarineValue();
+        for (int i=0; i<5; i++) {
+            System.out.println(v);
+            v = v.multiply(t);
         }
     }
 
@@ -193,7 +196,7 @@ public class AppTest
     public void testQuadruplex() {
         Quadruplex q = new Quadruplex(0, 1/sqrt(2), 0, -1/sqrt(2));
         System.out.println(q + " " + q.euclideanNorm());
-        q = Quadruplex.exp(q);
+//        q = Quadruplex.exp(q);
         Quadruplex c = q;
         for (int i = 0; i < 8; i++) {
             System.out.println(c + " " + c.euclideanNorm());
@@ -214,10 +217,10 @@ public class AppTest
 
     @Test
     public void testTrirationals() {
-        Trirational tc1 = new Trirational(exp(-1.5*PI/sqrt(3)),exp(-3*PI/sqrt(3)),1);
+        Trirational tc1 = new Trirational(2,3,4).add(3,4,2);
 
         System.out.println(tc1);
-        System.out.println(tc1.complexValue());
+        System.out.println(tc1.complexValue().trirationalValue());
     }
 
     @Test
