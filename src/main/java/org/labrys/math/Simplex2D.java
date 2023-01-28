@@ -56,6 +56,13 @@ public class Simplex2D extends Number {
                 .add(o.multiply(o).multiply(d));
     }
 
+    public Triplex triplexValue() {
+        Triplex o = basisTriplex();
+        return new Triplex(2/3.0, -1/3.0, -1/3.0).multiply(r)
+                .add(o.multiply(q))
+                .add(o.multiply(o).multiply(d));
+    }
+
     public Quadruplex quadruplexValue() {
         Quadruplex b = basisQuadruplex();
         return new Quadruplex(r,0,0,0)
@@ -63,14 +70,19 @@ public class Simplex2D extends Number {
                 .add(b.multiply(b).multiply(d));
     }
 
-    private Quadruplex basisQuadruplex() {
-        Quadruplex q = new Quadruplex(-0.5, 0, Math.sqrt(3)/2.0, 0);
-        return q;
-    }
-
     private Complex basisComplex() {
         Complex o = new Complex(-0.5, Math.sqrt(3)/2.0);
         return o;
+    }
+
+    private Triplex basisTriplex() {
+        Triplex o = new Triplex(-1/3.0, 2/3.0, -1/3.0);
+        return o;
+    }
+
+    private Quadruplex basisQuadruplex() {
+        Quadruplex q = new Quadruplex(-0.5, 0, Math.sqrt(3)/2.0, 0);
+        return q;
     }
 
     public static Simplex2D exp(Simplex2D t) {

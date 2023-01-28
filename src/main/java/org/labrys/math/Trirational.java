@@ -50,6 +50,12 @@ public class Trirational {
                 .multiply(Complex.exp(new Simplex2D(0,0,log(d2)).complexValue()));
     }
 
+    public Triplex triplexValue() {
+        return Triplex.exp(new Simplex2D(log(r),0,0).triplexValue())
+                .multiply(Triplex.exp(new Simplex2D(0,log(d1),0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex2D(0,0,log(d2)).triplexValue()));
+    }
+
     public Quadruplex quadruplexValue() {
         return new Quadruplex(r,0,0,0)
                 .multiply(Quadruplex.exp(new Simplex2D(0,log(d1),0).quadruplexValue()))

@@ -18,8 +18,15 @@ public class AppTest
     @Test
     public void testTriplex() {
 
-        Triplex t = Triplex.exp(new Triplex(0, 2*PI / (sqrt(3)), -2*PI / (sqrt(3))));
-        System.out.println(t + " norm:" + t.euclideanNorm());
+//        Triplex t = Triplex.exp(new Triplex(0, 2*PI/(3*sqrt(3)), -2*PI/(3*sqrt(3))));
+        Triplex t = Triplex.exp(new Simplex2D(log(5), 0, 0).triplexValue())
+                .multiply(Triplex.exp(new Simplex2D(0, log(5), 0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex2D(0, 0, log(5)).triplexValue()));
+        Triplex v = t;
+        for (int i=0; i<10; i++) {
+            System.out.println(v + " norm:" + v.euclideanNorm());
+            v = v.multiply(t);
+        }
     }
 
     @Test
