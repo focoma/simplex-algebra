@@ -18,32 +18,48 @@ public class AppTest
     @Test
     public void testTriplex() {
 
-//        Triplex t = Triplex.exp(new Triplex(0, 2*PI/(3*sqrt(3)), -2*PI/(3*sqrt(3))));
-        Triplex t = Triplex.exp(new Simplex2D(log(5), 0, 0).triplexValue())
-                .multiply(Triplex.exp(new Simplex2D(0, log(5), 0).triplexValue()))
-                .multiply(Triplex.exp(new Simplex2D(0, 0, log(5)).triplexValue()));
-        Triplex v = t;
-        for (int i=0; i<10; i++) {
-            System.out.println(v + " norm:" + v.euclideanNorm());
-            v = v.multiply(t);
-        }
+//        Triplex t = new Simplex2D(0,1,1).triplexValue();
+//        System.out.println(t);
+        Triplex t = Triplex.exp(new Triplex(1/3.0,1/3.0,1/3.0).multiply(log(3)))
+                .multiply(Triplex.exp(new Triplex(-1/3.0,-1/3.0,-1/3.0).multiply(log(6))));
+        System.out.println(t + " norm:" + t.euclideanNorm());
+        t = t.add(t);
+        System.out.println(t + " norm:" + t.euclideanNorm());
+
+        t = Triplex.exp(new Triplex(1/3.0,1/3.0,1/3.0).multiply(log(6)))
+                .multiply(Triplex.exp(new Triplex(-1/3.0,-1/3.0,-1/3.0).multiply(log(6))));
+        System.out.println(t + " norm:" + t.euclideanNorm());
+//        Triplex v = t;
+//        for (int i=0; i<10; i++) {
+//            System.out.println(v + " norm:" + v.euclideanNorm());
+//            v = v.multiply(t);
+//        }
     }
 
     @Test
     public void testTessarine() {
+
+
+
         Tessarine t = new Tessarine(0.5, -0.5, 0.5, 0.5);
 //        t = Tessarine.exp(t);
 
+        Tessarine sum = new Tessarine(0,0,0,0);
         Tessarine v = t;
         for (int i=0; i<5; i++) {
             System.out.println(v);
+            sum = sum.add(v);
+            System.out.println("Sum: " + sum);
             v = v.multiply(t);
         }
 
+        Quadruplex qsum = new Quadruplex(0,0,0,0);
         Quadruplex q = t.quadruplexValue();
         Quadruplex v2 = q;
         for (int i=0; i<5; i++) {
             System.out.println(v2);
+            qsum = qsum.add(v2);
+            System.out.println("Sum: " + qsum);
             v2 = v2.multiply(q);
         }
 
@@ -159,16 +175,15 @@ public class AppTest
 
     @Test
     public void test4Rational() {
-        Triplex t = new Triplex(PI/sqrt(3), 0, 0)
-                .multiply(Triplex.exp(new Simplex3D(0, log(2*PI/sqrt(3)), 0, 0).triplexValue()))
-                .multiply(Triplex.exp(new Simplex3D(0, 0, log(PI/sqrt(3)), 0).triplexValue()))
-                .multiply(Triplex.exp(new Simplex3D(0, 0, 0, log(2*PI/sqrt(3))).triplexValue()));
+        Triplex v = Triplex.exp(new Simplex3D(0, 0, 0, log(2/3.0)).triplexValue());
+        System.out.println(v);
 
-        Triplex v = t;
-        for (int i=0; i<20; i++) {
-            System.out.println(v);
-            v = v.multiply(t);
-        }
+        Triplex t = new Triplex(3, 0, 0)
+                .multiply(Triplex.exp(new Simplex3D(0, log(3), 0, 0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex3D(0, 0, log(3), 0).triplexValue()))
+                .multiply(Triplex.exp(new Simplex3D(0, 0, 0, log(2)).triplexValue()));
+
+        System.out.println(t);
     }
 
     @Test
@@ -201,14 +216,10 @@ public class AppTest
 
     @Test
     public void testQuadruplex() {
-        Quadruplex q = new Quadruplex(0, 1/sqrt(2), 0, -1/sqrt(2));
-        System.out.println(q + " " + q.euclideanNorm());
-//        q = Quadruplex.exp(q);
-        Quadruplex c = q;
-        for (int i = 0; i < 8; i++) {
-            System.out.println(c + " " + c.euclideanNorm());
-            c = c.multiply(q);
-        }
+        Quadruplex q = Quadruplex.exp(new Tessarine(0.5, 0, -0.5, 0).multiply(log(17)).quadruplexValue())
+                .multiply(Quadruplex.exp(new Tessarine(-0.5, 0, 0.5, 0).multiply(log(10)).quadruplexValue()))
+                .multiply(new Tessarine(0, 0, 1, 0).quadruplexValue());
+        System.out.println(q.tessarineValue() + " " + q.euclideanNorm());
     }
 
     @Test
