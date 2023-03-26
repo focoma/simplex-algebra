@@ -40,7 +40,7 @@ public class Complex extends Quaternion {
         return new Complex(cos(c.i), sin(c.i)).multiply(Math.exp(c.r));
     }
 
-    public double modulus() {
+    public double euclideanNorm() {
         return sqrt(norm());
     }
 
@@ -61,7 +61,7 @@ public class Complex extends Quaternion {
     }
 
     public Trirational trirationalValue() {
-        return new Trirational(modulus(),Math.exp(atan2(i,r)/sqrt(3)),Math.exp(-atan2(i,r)/sqrt(3)));
+        return new Trirational(euclideanNorm(),Math.exp(atan2(i,r)/sqrt(3)),Math.exp(-atan2(i,r)/sqrt(3)));
     }
 
     @Override

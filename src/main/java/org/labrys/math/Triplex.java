@@ -64,6 +64,13 @@ public class Triplex extends Number {
         return sqrt(pow(r,2) + pow(j,2) + pow(k,2));
     }
 
+    public Simplex3D simplexify() {
+        return new Simplex3D(r,0,0,0)
+                .add(new Simplex3D(3*sqrt(3)*((sqrt(3)-3)/9)/4, -sqrt(3)/2, 3*sqrt(3)*((sqrt(3)-1)/3)/4, 0).multiply(j))
+                .add(new Simplex3D(3*sqrt(3)*((sqrt(3)+3)/9)/4, sqrt(3)/2, 3*sqrt(3)*((sqrt(3)+1)/3)/4, 0).multiply(k))
+                .normalize();
+    }
+
     public Quaternion quaternionValue() {
         return new Quaternion(0, r, j, k);
     }
@@ -94,6 +101,12 @@ public class Triplex extends Number {
 
     public static Triplex exp(Triplex t) {
         return new Triplex(A(t.k), C(t.k), B(t.k)).multiply(A(t.j), B(t.j), C(t.j)).multiply(Math.exp(t.r));
+    }
+
+    public static Triplex ln(Triplex t) {
+        return new Triplex(log(pow(t.r,3) + pow(t.j,3) + pow(t.k,3) - 3*t.r*t.j*t.k),
+                (log((t.r + t.j + t.k)/sqrt(pow(t.r,2) + pow(t.j,2) + pow(t.k,2) - t.r*t.j - t.r*t.k - t.j*t.k)) + sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r-t.j-t.k))),
+                (log((t.r + t.j + t.k)/sqrt(pow(t.r,2) + pow(t.j,2) + pow(t.k,2) - t.r*t.j - t.r*t.k - t.j*t.k)) - sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r-t.j-t.k)))).multiply(1/3.0);
     }
 
     public static double A(double a) {

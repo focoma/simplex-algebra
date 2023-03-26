@@ -2,10 +2,9 @@ package org.labrys.math;
 
 import org.junit.Test;
 
-import java.text.MessageFormat;
+import java.util.Arrays;
 
 import static java.lang.Math.*;
-import static java.lang.Math.PI;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -37,37 +36,60 @@ public class AppTest
     }
 
     @Test
+    public void testIcosians() {
+        Quaternion a = new Quaternion(0.5,0.5,0.5,0.5);
+        Quaternion b = new Quaternion(0,1,1/PHI,PHI);
+
+        System.out.println(a);
+        System.out.println(b);
+
+        System.out.println(a.multiply(b));
+        System.out.println(b.multiply(a));
+    }
+
+    @Test
+    public void testTriplexDiagonalBasis() {
+        Triplex t1 = new Triplex(-2/3.0,-0.4553418,0.1220084679);
+//        Triplex t1 = new Triplex(0.5,-0.5,-0.5);
+
+        Triplex v = t1;
+        for (int i=0; i<100; i++) {
+            System.out.println(v + " norm: " + v.euclideanNorm());
+            v = v.multiply(t1);
+        }
+    }
+
+    @Test
+    public void testSimplex3DInverse() {
+        System.out.println(new Simplex3D(2, 3, 5, 0).triplexValue());
+
+        double x = -2/3.0, y = 0.6012825257644563, z = 4.0653841409022125;
+        System.out.println(new Simplex3D(x,0,0,0)
+                .add(new Simplex3D(3*sqrt(3)*((sqrt(3)-3)/9)/4, -sqrt(3)/2, 3*sqrt(3)*((sqrt(3)-1)/3)/4, 0).multiply(y))
+                .add(new Simplex3D(3*sqrt(3)*((sqrt(3)+3)/9)/4, sqrt(3)/2, 3*sqrt(3)*((sqrt(3)+1)/3)/4, 0).multiply(z)));
+    }
+
+    @Test
+    public void testTriplexTo4Rational() {
+        Simplex3D s = new Simplex3D(log(2), log(3), log(5), 1);
+        System.out.println(s.normalize());
+        System.out.println(s.triplexValue());
+
+        Triplex e = Triplex.exp(s.triplexValue());
+        System.out.println(e);
+
+        Triplex l = Triplex.ln(e);
+        System.out.println(l);
+        System.out.println(l.simplexify());
+    }
+
+    @Test
     public void testTessarine() {
 
+        Tessarine t1 = Tessarine.exp(new Tessarine(0.5,0,0.5,0).multiply(log(10)))
+                .multiply(Tessarine.exp(new Tessarine(-0.5,0,-0.5,0).multiply(log(5))));
 
-
-        Tessarine t = new Tessarine(0.5, -0.5, 0.5, 0.5);
-//        t = Tessarine.exp(t);
-
-        Tessarine sum = new Tessarine(0,0,0,0);
-        Tessarine v = t;
-        for (int i=0; i<5; i++) {
-            System.out.println(v);
-            sum = sum.add(v);
-            System.out.println("Sum: " + sum);
-            v = v.multiply(t);
-        }
-
-        Quadruplex qsum = new Quadruplex(0,0,0,0);
-        Quadruplex q = t.quadruplexValue();
-        Quadruplex v2 = q;
-        for (int i=0; i<5; i++) {
-            System.out.println(v2);
-            qsum = qsum.add(v2);
-            System.out.println("Sum: " + qsum);
-            v2 = v2.multiply(q);
-        }
-
-        v = q.tessarineValue();
-        for (int i=0; i<5; i++) {
-            System.out.println(v);
-            v = v.multiply(t);
-        }
+        System.out.println(t1 + " norm: " + t1.quadruplexValue().euclideanNorm());
     }
 
     @Test
@@ -78,56 +100,53 @@ public class AppTest
     }
 
     @Test
-    public void testConjugate() {
-        Triplex triplex = new Triplex(0,0.5,0.5);
-        System.out.println(triplex);
-        System.out.println(triplex.conjugate());
-        System.out.println(triplex.conjugate().conjugate());
-        System.out.println(triplex.conjugate().conjugate().conjugate());
-        System.out.println(triplex.conjugate().conjugate().conjugate().conjugate());
-        System.out.println(triplex.multiply(triplex.conjugate()));
-        System.out.println(triplex.modulus());
+    public void testQuintuplex() {
+        for (long i = 0; i < 1000000000000000000L; i++) {
+            double w=0, x=0, y=0, z=0;
+            Quintuplex[] a = new Quintuplex[6];
+            for (int k = 0; k < 10000; k++) {
+                w = (-0.5094 - 0.0001*random());
+                x = (-0.2977 - 0.0001*random());
+                y = (-0.5494 - 0.0001*random());
+                z = (0.5566 + 0.0001*random());
+
+                a[0] = new Quintuplex(-0.2, w, x, y, z);
+                if (a[0].euclideanNorm() < 1.000003) {
+                    break;
+                }
+            }
+
+            for (int j=0; j<5;) {
+                a[j+1] = a[j].multiply(a[0]);
+
+                if (abs(a[j+1].r+0.2) > 0.000003 || a[j+1].euclideanNorm() > 1.000003) {
+                    break;
+                }
+                j++;
+            }
+
+            if (a[5] != null) {
+                Arrays.stream(a).forEach(x1 -> System.out.println(x1 + " norm: "+x1.euclideanNorm()));
+            }
+        }
     }
 
     @Test
-    public void testTriplexWithTetragonalAntiprism() {
-        Triplex s = new Triplex(0.804, (-2.0 + sqrt(2) + sqrt(6)) / 6.0, -(2.0 - sqrt(2) + sqrt(6)) / 6.0);
-//        Triplex s = new Triplex(1.0/3.0,1.0/3.0,1.0/3.0);
+    public void testSimplex4D() {
+        Quadruplex s1 = new Simplex4D(0,1,0,0,0).quadruplexValue();
+        System.out.println(s1 + "norm: " + s1.euclideanNorm());
+        Quadruplex s2 = new Simplex4D(0,1,0,0,0).altQuadruplexValue();
+        System.out.println(s2 + "norm: " + s2.euclideanNorm());
 
-        Triplex t = s;
-        for (int i = 0; i < 8; i++) {
-            System.out.println(t);
-            t = t.multiply(s);
-        }
+        Quadruplex s3 = s1.multiply(s2).multiply(s1).multiply(s2).multiply(-1);
         System.out.println();
 
-        Triplex c = new Simplex3D(0,-1,0,0).triplexValue();
-        t = c;
-        for (int i = 0; i < 4; i++) {
-            System.out.println(t);
-            t = t.multiply(c);
-        }
-    }
+        Quadruplex v = s3;
+        for (int i=0; i<20; i++) {
+            System.out.println(v + "norm: " + v.euclideanNorm());
 
-    @Test
-    public void test3DMultiplication() {
-        Simplex3D b = new Simplex3D(0, 1, 0, 0);
-        Simplex3D p = new Simplex3D(0, 0, 1, 0);
-        Simplex3D z = new Simplex3D(0, 0, 0.45849664917601007033647, -0.3408767092225170);
-        Simplex3D y = new Simplex3D(sqrt(2)*2.0, 0, 3, 0);
-        Simplex3D h = new Simplex3D(sqrt(2.0)/2.0, sqrt(2.0)/2.0, 0, 0);
-        Simplex3D s = new Simplex3D(0, 0, 0, -1);
-        Simplex3D n = new Simplex3D(-1, 0, 0, 0);
-        Simplex3D np = new Simplex3D(0, 0, -1, 0);
-        Simplex3D v = p;
-        System.out.println(b.multiply(-1).multiply(v));
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).normalize());
-        System.out.println(b.multiply(-1).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).multiply(v).normalize());
+            v = v.multiply(s3);
+        }
     }
 
     @Test
