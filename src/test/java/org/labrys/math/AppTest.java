@@ -2,7 +2,9 @@ package org.labrys.math;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Math.*;
 import static org.junit.Assert.assertEquals;
@@ -97,6 +99,99 @@ public class AppTest
         Triplex t = new Triplex(-sqrt(2), 1.0 + sqrt(2), sqrt(2) - 1.0);
         System.out.println(t);
         System.out.println(t.divide(new Triplex(2,2,0)));
+    }
+
+    @Test
+    public void testSimplex5D() {
+        double c = sqrt(3*(5 + 2*sqrt(5)));
+        Quintuplex s2 = new Quintuplex(-1/5.0,
+                (3+c)/10.0,
+                -3/5.0 + 3*pow(3+c,2)/20.0 - pow(3+c,3)/60.0,
+                6/5.0 - 3*pow(3+c,2)/20.0 + pow(3+c,3)/60.0,
+                3/5.0 + (-3-c)/10.0);
+
+        System.out.println(s2);
+
+        Quintuplex s3 = new Quintuplex(-1/5.0,
+                (sqrt(5)-1)/5.0,
+                -(sqrt(5)+1)/5.0,
+                -(sqrt(5)+1)/5.0,
+                (sqrt(5)-1)/5.0);
+
+        System.out.println(s3);
+
+        Quintuplex s1 = s3.multiply(s2).multiply(s2);
+
+        List<Quintuplex> sList = new ArrayList<>();
+        Quintuplex v = s1;
+        for (int i=0; i < 6; i++) {
+            System.out.println(v);
+            sList.add(v);
+            v = v.multiply(s1);
+        }
+        System.out.println();
+
+        double cp = sqrt(3*(5 - 2*sqrt(5)));
+        Quintuplex s2p = new Quintuplex(-1/5.0,
+                (3+cp)/10.0,
+                -3/5.0 + 3*pow(3+cp,2)/20.0 - pow(3+cp,3)/60.0,
+                6/5.0 - 3*pow(3+cp,2)/20.0 + pow(3+cp,3)/60.0,
+                3/5.0 + (-3-cp)/10.0);
+
+        System.out.println(s2p);
+
+        Quintuplex s3p = new Quintuplex(-1/5.0,
+                -(sqrt(5)+1)/5.0,
+                (sqrt(5)-1)/5.0,
+                (sqrt(5)-1)/5.0,
+                -(sqrt(5)+1)/5.0);
+
+        System.out.println(s3p);
+
+        Quintuplex s1p = s3p.multiply(s2p).multiply(s2p);
+
+        List<Quintuplex> spList = new ArrayList<>();
+        Quintuplex vp = s1p;
+        for (int i=0; i < 6; i++) {
+            System.out.println(vp);
+            spList.add(vp);
+            vp = vp.multiply(s1p);
+        }
+        System.out.println();
+
+        List<Quintuplex> pList = new ArrayList<>();
+        for (Quintuplex s : sList) {
+            for (Quintuplex sp : spList) {
+                Quintuplex p = s.multiply(sp);
+                System.out.print("(" + s + ") * (" + sp + ") = " + p);
+                if (sList.contains(p)) {
+                    System.out.println(" exists in sList.");
+                }
+                if (spList.contains(p)) {
+                    System.out.println(" exists in sList.");
+                }
+                if (pList.contains(p)) {
+                    System.out.println(" exists in pList.");
+                }
+                System.out.println();
+                pList.add(p);
+            }
+        }
+    }
+
+    @Test
+    public void testDiagonalInverses() {
+        double theta = 2 * PI / 3;
+        Triplex o = new Triplex(2,-1,-1).multiply(1/3.0).multiply(cos(theta))
+                .add(new Triplex(0,1,-1).multiply(1/sqrt(3)).multiply(sin(theta)));
+
+        System.out.println(Triplex.ln(o));
+
+    }
+
+    @Test
+    public void testOrthoplexicElement() {
+        System.out.println(new AlgebraicArray(2, -3, 5).add(2, 0, 3, 0, 5, 0));
     }
 
     @Test

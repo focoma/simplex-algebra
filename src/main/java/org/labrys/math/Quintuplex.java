@@ -1,6 +1,7 @@
 package org.labrys.math;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 import static java.lang.Math.*;
 
@@ -79,5 +80,18 @@ public class Quintuplex extends Number {
     @Override
     public String toString() {
         return MessageFormat.format("{0,number,0.0000000} + {1,number,0.0000000}w + {2,number,0.0000000}x + {3,number,0.0000000}y + {4,number,0.0000000}z", r, w, x, y, z);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quintuplex that = (Quintuplex) o;
+        return Double.compare(that.r, r) == 0 && Double.compare(that.w, w) == 0 && Double.compare(that.x, x) == 0 && Double.compare(that.y, y) == 0 && Double.compare(that.z, z) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(r, w, x, y, z);
     }
 }
