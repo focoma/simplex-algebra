@@ -23,6 +23,28 @@ public class AlgebraicArray {
         return new AlgebraicArray(sumTerms);
     }
 
+    public AlgebraicArray multiply(AlgebraicArray e) {
+        return add(e.terms);
+    }
+
+    public AlgebraicArray multiply(double... otherTerms) {
+        int resultLength = lcm(terms.length, otherTerms.length);
+        double[] multiplicandTerms = new double[resultLength];
+        double[] multiplierTerms = new double[resultLength];
+        double[] productTerms = new double[resultLength];
+
+        copyOrAdd(terms, multiplicandTerms);
+        copyOrAdd(otherTerms, multiplierTerms);
+
+        for (int i=0; i<resultLength; i++) {
+            for (int j=0; j<resultLength; j++) {
+                productTerms[(i+j)%resultLength] += Math.pow(-1, (resultLength+1)*((i+j)/resultLength)) * multiplicandTerms[i]*multiplierTerms[j];
+            }
+        }
+
+        return new AlgebraicArray(productTerms);
+    }
+
     private void copyOrAdd(double[] arr, double[] target) {
         int targetLength = target.length;
         int arrLength = arr.length;

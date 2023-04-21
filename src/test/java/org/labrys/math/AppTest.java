@@ -190,8 +190,8 @@ public class AppTest
     }
 
     @Test
-    public void testOrthoplexicElement() {
-        System.out.println(new AlgebraicArray(2, -3, 5).add(2, 0, 3, 0, 5, 0));
+    public void testAlgebraicArray() {
+        System.out.println(new AlgebraicArray(0, 1, 0).multiply(0, 1, 0).multiply(0, 1, 0));
     }
 
     @Test
