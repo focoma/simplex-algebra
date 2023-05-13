@@ -55,17 +55,14 @@ public class AlgebraicArray {
         }
     }
 
-    private static int lcm(long a, long b)
-    {
+    private static int lcm(long a, long b) {
         return (int)(a * (b / gcd(a, b)));
     }
 
-    private static long gcd(long a, long b)
-    {
-        while (b > 0)
-        {
+    private static long gcd(long a, long b) {
+        while (b > 0) {
             long temp = b;
-            b = a % b; // % is remainder
+            b = a % b;
             a = temp;
         }
         return a;

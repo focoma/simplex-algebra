@@ -95,10 +95,13 @@ public class AppTest
     }
 
     @Test
-    public void testTriplexDivision() {
-        Triplex t = new Triplex(-sqrt(2), 1.0 + sqrt(2), sqrt(2) - 1.0);
-        System.out.println(t);
-        System.out.println(t.divide(new Triplex(2,2,0)));
+    public void testTriplexLog() {
+        Triplex t = Triplex.exp(Triplex.ln(new Triplex(0,1 / sqrt(2), 1 / sqrt(2))).multiply(new Triplex(0, PI / (2 * sqrt(3)), -PI / (2 * sqrt(3)))));
+        Triplex v = t;
+        for (int i=0; i<300; i++) {
+            System.out.println(v);
+            v = v.multiply(t);
+        }
     }
 
     @Test
@@ -177,6 +180,62 @@ public class AppTest
                 pList.add(p);
             }
         }
+    }
+
+    @Test
+    public void testTessarineTesseract() {
+        System.out.println(new Tessarine(0, 0, 1, 0).quadruplexValue());
+        System.out.println();
+        System.out.println(new Tessarine(0, 0, -1, 0).quadruplexValue());
+        System.out.println();
+
+        Tessarine t = new Tessarine(0, 1, 0, 0);
+        Tessarine v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
+
+        t = new Tessarine(0, 0, 0, 1);
+        v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
+
+        t = new Tessarine(0.5, -0.5, 0.5, 0.5);
+        v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
+
+        t = new Tessarine(0.5, 0.5, -0.5, 0.5);
+        v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
+
+        t = new Tessarine(-0.5, 0.5, -0.5, -0.5);
+        v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
+
+        t = new Tessarine(-0.5, -0.5, 0.5, -0.5);
+        v = t;
+        for (int i=0; i<4; i++) {
+            System.out.println(v.quadruplexValue());
+            v = v.multiply(t);
+        }
+        System.out.println();
     }
 
     @Test

@@ -104,9 +104,12 @@ public class Triplex extends Number {
     }
 
     public static Triplex ln(Triplex t) {
+        double a1 = log((t.r + t.j + t.k) / sqrt(t.r*t.r + t.j*t.j + t.k*t.k - t.r*t.j - t.r*t.k - t.j*t.k));
+        double a2 = sqrt(3) * atan(sqrt(3) * (t.j - t.k) / (2*t.r - t.j - t.k));
+
         return new Triplex(log(pow(t.r,3) + pow(t.j,3) + pow(t.k,3) - 3*t.r*t.j*t.k),
-                (log((t.r + t.j + t.k)/sqrt(pow(t.r,2) + pow(t.j,2) + pow(t.k,2) - t.r*t.j - t.r*t.k - t.j*t.k)) + sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r-t.j-t.k))),
-                (log((t.r + t.j + t.k)/sqrt(pow(t.r,2) + pow(t.j,2) + pow(t.k,2) - t.r*t.j - t.r*t.k - t.j*t.k)) - sqrt(3)*atan(sqrt(3)*(t.j-t.k)/(2*t.r-t.j-t.k)))).multiply(1/3.0);
+                (a1 + a2),
+                (a1 - a2)).multiply(1/3.0);
     }
 
     public static double A(double a) {
