@@ -24,7 +24,7 @@ public class AlgebraicArray {
     }
 
     public AlgebraicArray multiply(AlgebraicArray e) {
-        return add(e.terms);
+        return multiply(e.terms);
     }
 
     public AlgebraicArray multiply(double... otherTerms) {

@@ -250,7 +250,14 @@ public class AppTest
 
     @Test
     public void testAlgebraicArray() {
-        System.out.println(new AlgebraicArray(0, 1, 0).multiply(0, 1, 0).multiply(0, 1, 0));
+        AlgebraicArray l = new AlgebraicArray(0, 1 / sqrt(2), 0, -1 / sqrt(2)).multiply(0,1,0);
+
+        AlgebraicArray v = l;
+        for (int i=0; i<6; i++) {
+            System.out.println(v);
+            v = v.multiply(l);
+        }
+
     }
 
     @Test
@@ -288,19 +295,39 @@ public class AppTest
     @Test
     public void testSimplex4D() {
         Quadruplex s1 = new Simplex4D(0,1,0,0,0).quadruplexValue();
-        System.out.println(s1 + "norm: " + s1.euclideanNorm());
-        Quadruplex s2 = new Simplex4D(0,1,0,0,0).altQuadruplexValue();
-        System.out.println(s2 + "norm: " + s2.euclideanNorm());
+        Complex root5 = getComplex(s1);
 
-        Quadruplex s3 = s1.multiply(s2).multiply(s1).multiply(s2).multiply(-1);
+        Quadruplex qv = s1;
+        Complex cv = root5;
+        for (int i=0; i<5; i++) {
+            System.out.println(qv + " = " + getComplex(qv) + " = " + cv);
+            qv = qv.multiply(s1);
+            cv = cv.multiply(root5);
+        }
         System.out.println();
 
-        Quadruplex v = s3;
-        for (int i=0; i<20; i++) {
-            System.out.println(v + "norm: " + v.euclideanNorm());
+        s1 = new Simplex4D(0,1,0,0,0).altQuadruplexValue();
+        root5 = getComplex(s1);
 
-            v = v.multiply(s3);
+        qv = s1;
+        cv = root5;
+        for (int i=0; i<5; i++) {
+            System.out.println(qv + " = " + getComplex(qv) + " = " + cv);
+            qv = qv.multiply(s1);
+            cv = cv.multiply(root5);
         }
+
+        System.out.println();
+    }
+
+    private Complex getComplex(Quadruplex s1) {
+        Complex sr1 = new Complex(s1.r, 0);
+        Complex sh1 = new Complex(1/sqrt(2),1/sqrt(2)).multiply(s1.h);
+        Complex si1 = new Complex(0, s1.i);
+        Complex sih1 = new Complex(-1/sqrt(2),1/sqrt(2)).multiply(s1.ih);
+
+        Complex root5 = sr1.add(sh1).add(si1).add(sih1);
+        return root5;
     }
 
     @Test
