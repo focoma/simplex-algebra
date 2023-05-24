@@ -18,6 +18,10 @@ public class Triplex extends Number {
         return add(new Triplex(x, y, z));
     }
 
+    public Triplex add(double scalar) {
+        return new Triplex(r + scalar, j, k);
+    }
+
     public Triplex add(Triplex other) {
         return new Triplex(r + other.r, j + other.j, k + other.k);
     }

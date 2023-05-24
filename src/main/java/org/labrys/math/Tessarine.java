@@ -57,6 +57,10 @@ public class Tessarine extends Number {
                 .multiply(cos(c.k), 0, 0, sin(c.k));
     }
 
+    public double euclideanNorm() {
+        return sqrt(pow(r,2) + pow(i,2) + pow(j,2) + pow(k,2));
+    }
+
     @Override
     public int intValue() {
         return (int)r;

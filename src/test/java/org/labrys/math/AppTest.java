@@ -88,20 +88,21 @@ public class AppTest
     @Test
     public void testTessarine() {
 
-        Tessarine t1 = Tessarine.exp(new Tessarine(0.5,0,0.5,0).multiply(log(10)))
-                .multiply(Tessarine.exp(new Tessarine(-0.5,0,-0.5,0).multiply(log(5))));
+        Quadruplex t1 = new Tessarine(0,sqrt(2)/2,sqrt(2)/2,0).quadruplexValue();
+        Quadruplex t2 = t1.multiply(t1);
+        Quadruplex t3 = t2.multiply(t1);
 
-        System.out.println(t1 + " norm: " + t1.quadruplexValue().euclideanNorm());
+        System.out.println(t1.multiply(0.5).add(t2.multiply(1/sqrt(2))).add(t3.multiply(-0.5)));
     }
 
     @Test
     public void testTriplexLog() {
-        Triplex t = Triplex.exp(Triplex.ln(new Triplex(0,1 / sqrt(2), 1 / sqrt(2))).multiply(new Triplex(0, PI / (2 * sqrt(3)), -PI / (2 * sqrt(3)))));
-        Triplex v = t;
-        for (int i=0; i<300; i++) {
-            System.out.println(v);
-            v = v.multiply(t);
-        }
+        Triplex t = Triplex.exp(new Simplex3D(0,0,0,1).triplexValue().multiply(log(5)))
+                .add(Triplex.exp(new Simplex3D(0,0,1,0).triplexValue().multiply(log(7))))
+                .add(Triplex.exp(new Simplex3D(0,1,0,0).triplexValue().multiply(log(11))))
+                .add(13);
+
+        System.out.println(t);
     }
 
     @Test
@@ -250,7 +251,7 @@ public class AppTest
 
     @Test
     public void testAlgebraicArray() {
-        AlgebraicArray l = new AlgebraicArray(0, 1 / sqrt(2), 0, -1 / sqrt(2)).multiply(0,1,0);
+        AlgebraicArray l = new AlgebraicArray(0, 1 / sqrt(2), 0, -1 / sqrt(2)).multiply(0,1,0,0);
 
         AlgebraicArray v = l;
         for (int i=0; i<6; i++) {

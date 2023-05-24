@@ -2,6 +2,9 @@ package org.labrys.math;
 
 import java.text.MessageFormat;
 
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
 public class Quaternion extends Number {
     protected double r;
     protected double i;
@@ -46,6 +49,10 @@ public class Quaternion extends Number {
                 r * other.k + k * other.r + i * other.j - j*other.i);
 
         return product;
+    }
+
+    public double euclideanNorm() {
+        return sqrt(pow(r,2) + pow(i,2) + pow(j,2) + pow(k,2));
     }
 
     @Override
