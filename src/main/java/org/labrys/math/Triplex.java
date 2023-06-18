@@ -68,6 +68,10 @@ public class Triplex extends Number {
         return sqrt(pow(r,2) + pow(j,2) + pow(k,2));
     }
 
+    public static Triplex generateUnit(double radians) {
+        return exp(new Triplex(0, radians/sqrt(3), -radians/sqrt(3)));
+    }
+
     public Simplex3D simplexify() {
         return new Simplex3D(r,0,0,0)
                 .add(new Simplex3D(3*sqrt(3)*((sqrt(3)-3)/9)/4, -sqrt(3)/2, 3*sqrt(3)*((sqrt(3)-1)/3)/4, 0).multiply(j))

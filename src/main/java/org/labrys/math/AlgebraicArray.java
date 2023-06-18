@@ -45,6 +45,26 @@ public class AlgebraicArray {
         return new AlgebraicArray(productTerms);
     }
 
+    public double dotProduct(AlgebraicArray e) {
+        return dotProduct(e.terms);
+    }
+
+    public double dotProduct(double... otherTerms) {
+        int resultLength = lcm(terms.length, otherTerms.length);
+        double[] scaledTerms = new double[resultLength];
+        double[] scaledOtherTerms = new double[resultLength];
+        double result = 0;
+
+        copyOrAdd(terms, scaledTerms);
+        copyOrAdd(otherTerms, scaledOtherTerms);
+
+        for (int i=0; i<resultLength; i++) {
+            result += (scaledTerms[i]*scaledOtherTerms[i]);
+        }
+
+        return result;
+    }
+
     private void copyOrAdd(double[] arr, double[] target) {
         int targetLength = target.length;
         int arrLength = arr.length;
@@ -66,6 +86,20 @@ public class AlgebraicArray {
             a = temp;
         }
         return a;
+    }
+
+    public double euclideanNorm() {
+        double result = 0;
+
+        for (double term : terms) {
+            result += (term*term);
+        }
+
+        return Math.sqrt(result);
+    }
+
+    public double angleWith(AlgebraicArray other) {
+        return Math.acos(dotProduct(other)/(euclideanNorm()*other.euclideanNorm()));
     }
 
     @Override

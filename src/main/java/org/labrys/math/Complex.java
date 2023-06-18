@@ -56,6 +56,10 @@ public class Complex extends Quaternion {
         return new Complex(cos(radians), sin(radians));
     }
 
+    public Simplex2D simplexify() {
+        return new Simplex2D(r, i/sqrt(3), -i/sqrt(3));
+    }
+
     public Quadruplex quadruplexValue() {
         return new Quadruplex(r, 0, i, 0);
     }
